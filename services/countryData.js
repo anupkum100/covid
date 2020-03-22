@@ -1,6 +1,7 @@
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function ($scope, $http) {
     $scope.selectedArea = "World";
+    $scope.indiaData = {};
 
     $scope.category = [{
         label: 'Total Cases',
@@ -57,6 +58,12 @@ app.controller('myCtrl', function ($scope, $http) {
         }
     }).then(function mySuccess(response) {
         $scope.countryWise = response.data.countries_stat;
+        response.data.countries_stat.forEach(countryData => {
+            if (countryData.country_name === 'India') {
+                $scope.indiaData = countryData
+            }
+        })
+
 
     }, function myError(response) {
         $scope.myWelcome = response.statusText;
@@ -70,13 +77,13 @@ app.controller('myCtrl', function ($scope, $http) {
             $scope.category[1].value = $scope.worldData.total_deaths;
             $scope.category[2].value = $scope.worldData.total_recovered;
             $scope.category[3].value = $scope.worldData.new_cases;
-    
+
             $scope.category[1].percentage = getPercentage($scope.worldData.total_deaths, $scope.worldData.total_cases);
             $scope.category[2].percentage = getPercentage($scope.worldData.total_recovered, $scope.worldData.total_cases);
             $scope.category[3].percentage = getPercentage($scope.worldData.new_cases, $scope.worldData.total_cases);
-    
+
             createPieChart();
-    
+
         } else {
             updateAllData(country);
         }

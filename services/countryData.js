@@ -39,14 +39,13 @@ app.controller('myCtrl', function ($scope, $http) {
         $scope.category[3].percentage = getPercentage(response.data.new_cases, response.data.total_cases);
 
         createPieChart();
-        createAreaChart();
 
     }, function myError(response) {
         $scope.worldData = {};
     });
 
     function getPercentage(category, total) {
-        return 100 * (parseInt((category).replace(',', '')) / parseInt((total).replace(',', ''))).toFixed(4)
+        return 100 * (parseInt((category).replace(',', '')) / parseInt((total).replace(',', ''))).toFixed(3)
     }
 
     $http({
@@ -66,7 +65,22 @@ app.controller('myCtrl', function ($scope, $http) {
 
     $scope.changeArea = (country) => {
         $scope.selectedArea = country.country_name;
-        updateAllData(country);
+        if (country === 'World') {
+            $scope.category[0].value = $scope.worldData.total_cases;
+            $scope.category[1].value = $scope.worldData.total_deaths;
+            $scope.category[2].value = $scope.worldData.total_recovered;
+            $scope.category[3].value = $scope.worldData.new_cases;
+    
+            $scope.category[1].percentage = getPercentage($scope.worldData.total_deaths, $scope.worldData.total_cases);
+            $scope.category[2].percentage = getPercentage($scope.worldData.total_recovered, $scope.worldData.total_cases);
+            $scope.category[3].percentage = getPercentage($scope.worldData.new_cases, $scope.worldData.total_cases);
+    
+            createPieChart();
+    
+        } else {
+            updateAllData(country);
+        }
+
     }
 
     function updateAllData(countryData) {
@@ -80,6 +94,8 @@ app.controller('myCtrl', function ($scope, $http) {
         $scope.category[3].percentage = getPercentage(countryData.new_cases, countryData.cases);
 
         createPieChart();
+        getHistoryData();
+        window.scrollTo(0, 0);
     }
 
     function createPieChart() {
@@ -118,14 +134,15 @@ app.controller('myCtrl', function ($scope, $http) {
 
     function createAreaChart() {
 
-        getHistoryData();
-
         // Area Chart Example
         var ctx = document.getElementById("myAreaChart");
-        var myLineChart = new Chart(ctx, {
+        let labels = $scope.graphData.map(historyData => historyData.data.record_date.split(' ')[0]);
+        let data = $scope.graphData.map(historyData => historyData.data.total_cases.replace(',', ''));
+
+        new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                labels: labels,
                 datasets: [{
                     label: "Infected",
                     lineTension: 0.3,
@@ -139,7 +156,7 @@ app.controller('myCtrl', function ($scope, $http) {
                     pointHoverBorderColor: "rgba(78, 115, 223, 1)",
                     pointHitRadius: 10,
                     pointBorderWidth: 2,
-                    data: [0, 10, 100, 200],
+                    data
                 }],
             },
             options: {
@@ -158,11 +175,11 @@ app.controller('myCtrl', function ($scope, $http) {
                             unit: 'date'
                         },
                         gridLines: {
-                            display: true,
+                            display: false,
                             drawBorder: false
                         },
                         ticks: {
-                            maxTicksLimit: 7
+                            maxTicksLimit: 10
                         }
                     }],
                     yAxes: [{
@@ -171,7 +188,7 @@ app.controller('myCtrl', function ($scope, $http) {
                             padding: 10,
                             // Include a dollar sign in the ticks
                             callback: function (value, index, values) {
-                                return number_format(value);
+                                return value
                             }
                         },
                         gridLines: {
@@ -203,38 +220,13 @@ app.controller('myCtrl', function ($scope, $http) {
                     callbacks: {
                         label: function (tooltipItem, chart) {
                             var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                            return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+                            return datasetLabel + ': ' + tooltipItem.yLabel
                         }
                     }
                 }
             }
 
         });
-    }
-
-    function number_format(number, decimals, dec_point, thousands_sep) {
-        // *     example: number_format(1234.56, 2, ',', ' ');
-        // *     return: '1 234,56'
-        number = (number + '').replace(',', '').replace(' ', '');
-        var n = !isFinite(+number) ? 0 : +number,
-            prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-            sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
-            dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
-            s = '',
-            toFixedFix = function (n, prec) {
-                var k = Math.pow(10, prec);
-                return '' + Math.round(n * k) / k;
-            };
-        // Fix for IE parseFloat(0.55).toFixed(0) = 0;
-        s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
-        if (s[0].length > 3) {
-            s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
-        }
-        if ((s[1] || '').length < prec) {
-            s[1] = s[1] || '';
-            s[1] += new Array(prec - s[1].length + 1).join('0');
-        }
-        return s.join(dec);
     }
 
     function getHistoryData() {
@@ -247,12 +239,19 @@ app.controller('myCtrl', function ($scope, $http) {
             }
         }).then(function mySuccess(response) {
             $scope.historyData = response.data.stat_by_country;
+            $scope.labelList = [];
+            $scope.graphData = [];
 
-            response.data.stat_by_country.forEach(data => {
-                $scope.graphData.push({
-                    data
-                })
+            response.data.stat_by_country.forEach((data, index) => {
+                if (!$scope.labelList.includes(data.record_date.split(' ')[0])) {
+                    $scope.graphData.push({
+                        data
+                    })
+                    $scope.labelList.push(data.record_date.split(' ')[0]);
+
+                }
             })
+            createAreaChart();
         }, function myError(response) {
             $scope.myWelcome = response.statusText;
         });

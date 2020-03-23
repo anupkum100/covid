@@ -27,11 +27,12 @@
   <div id="wrapper" ng-app="myApp" ng-controller="myCtrl">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-info sidebar-dark accordion" style="width: -webkit-fill-available;"
+    <ul class="navbar-nav sidebar-dark accordion" style="width: -webkit-fill-available;"
       ng-class="isCountrySelected ? 'w-0 d-none' : ''" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="text-light border btn btn-primary sidebar-brand d-flex align-items-center justify-content-center" ng-click="changeArea(indiaData)">
+      <a class="text-light border btn btn-primary sidebar-brand d-flex align-items-center justify-content-center"
+        ng-click="changeArea(indiaData)">
         India Data
       </a>
 
@@ -48,7 +49,7 @@
       </li>
 
       <li class="nav-item active">
-        <a class="p-0" style="color: white; font-size: 12px; cursor: pointer;">
+        <a class="p-0" style="color: gray; font-size: 12px; cursor: pointer;">
           <table class="w-100">
             <tr class="text-center">
               <th class="w-50 border"> Country</th>
@@ -58,7 +59,7 @@
             <tr class="text-center" ng-repeat="country in countryWise | filter:searchText"
               ng-click="changeArea(country)">
               <td class="w-50 border"> <span class="">{{country.country_name}} </span></td>
-              <td class="w-25 border"><span class="text-light">{{country.cases}}</span></td>
+              <td class="w-25 border"><span class="text-dark">{{country.cases}}</span></td>
               <td class="w-25 border"> <span class="text-danger">{{country.deaths}}</span></td>
             </tr>
           </table>
@@ -83,8 +84,7 @@
             transform: rotate(90deg);
             font-size: 30px;">|||</span>
             <h1 class="h3 mb-0 text-gray-800 d-inline">{{selectedArea}}</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-              Last Updated {{worldData.statistic_taken_at}}</a>
+            <pre class="text-muted text-right">Last Updated {{worldData.statistic_taken_at}}</pre>
           </div>
 
           <!-- Content Row -->

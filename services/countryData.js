@@ -106,7 +106,6 @@ app.controller('myCtrl', function ($scope, $http) {
         $scope.category[2].percentage = getPercentage(countryData.total_recovered, countryData.cases);
         $scope.category[3].percentage = getPercentage(countryData.new_cases, countryData.cases);
 
-        createPieChart();
         getHistoryData();
         window.scrollTo(0, 0);
     }
@@ -120,7 +119,7 @@ app.controller('myCtrl', function ($scope, $http) {
                 labels: [$scope.category[0].label, $scope.category[1].label, $scope.category[2].label, $scope.category[3].label],
                 datasets: [{
                     data: [totalPercentage, $scope.category[1].percentage, $scope.category[2].percentage, $scope.category[3].percentage],
-                    backgroundColor: ['#abcabc', '#4e73df', '#1cc88a', '#ff3333'],
+                    backgroundColor: ['#abcabc', '#4e73df', '#1cc88a', '#e74a3b'],
                     hoverBackgroundColor: ['#000', '#000', '#000', '#000'],
                     hoverBorderColor: "rgba(234, 236, 244, 1)",
                 }],
@@ -265,6 +264,7 @@ app.controller('myCtrl', function ($scope, $http) {
                 }
             })
             createAreaChart();
+            createPieChart();
         }, function myError(response) {
             $scope.myWelcome = response.statusText;
         });

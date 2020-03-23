@@ -2,6 +2,7 @@ var app = angular.module('myApp', []);
 app.controller('myCtrl', function ($scope, $http) {
     $scope.selectedArea = "World";
     $scope.indiaData = {};
+    $scope.indainStateData = {};
     $scope.isCountrySelected = false;
 
     $scope.category = [{
@@ -21,6 +22,8 @@ app.controller('myCtrl', function ($scope, $http) {
         value: 0,
         class: "info"
     }]
+
+    getIndianStateData();
 
     $http({
         method: "GET",
@@ -60,13 +63,12 @@ app.controller('myCtrl', function ($scope, $http) {
         }
     }).then(function mySuccess(response) {
         $scope.countryWise = response.data.countries_stat;
+
         response.data.countries_stat.forEach(countryData => {
             if (countryData.country_name === 'India') {
                 $scope.indiaData = countryData
             }
         })
-
-
     }, function myError(response) {
         $scope.myWelcome = response.statusText;
     });
@@ -96,6 +98,23 @@ app.controller('myCtrl', function ($scope, $http) {
 
     }
 
+    function getIndianStateData() {
+        $http({
+            method: "GET",
+            url: "https://ameerthehacker.github.io/corona-india-status/covid19-indian-states.json"
+        }).then(function mySuccess(response) {
+            $scope.indainStateData = Object.keys(response.data.data).map((stateData) => {
+                return {
+                    key: stateData,
+                    value: response.data.data[stateData]
+                }
+
+            });
+        }, function myError(response) {
+            $scope.myWelcome = response.statusText;
+        });
+    }
+
     function updateAllData(countryData) {
         $scope.category[0].value = countryData.cases;
         $scope.category[1].value = countryData.deaths;
@@ -112,7 +131,8 @@ app.controller('myCtrl', function ($scope, $http) {
 
     function createPieChart() {
         var ctx = document.getElementById("myPieChart");
-        totalPercentage = 100 - $scope.category[1].percentage - $scope.category[2].percentage - $scope.category[3].percentage
+        totalPercentage = 100 - $scope.category[1].percentage - $scope.category[2].percentage - $scope.category[3].percentage;
+
         return new Chart(ctx, {
             type: 'doughnut',
             data: {
@@ -142,14 +162,18 @@ app.controller('myCtrl', function ($scope, $http) {
                 cutoutPercentage: 80,
             },
         });
+
     }
 
     function createAreaChart() {
 
         // Area Chart Example
         var ctx = document.getElementById("myAreaChart");
+
         let labels = $scope.graphData.map(historyData => historyData.data.record_date.split(' ')[0]);
         let data = $scope.graphData.map(historyData => historyData.data.total_cases.replace(',', ''));
+        let deaths = $scope.graphData.map(historyData => historyData.data.total_deaths.replace(',', ''));
+        let recovered = $scope.graphData.map(historyData => historyData.data.total_recovered.replace(',', ''));
 
         new Chart(ctx, {
             type: 'line',
@@ -169,6 +193,36 @@ app.controller('myCtrl', function ($scope, $http) {
                     pointHitRadius: 10,
                     pointBorderWidth: 2,
                     data
+                },
+                {
+                    label: "Deaths",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(78, 115, 223, 0.05)",
+                    borderColor: "#e74a3b",
+                    pointRadius: 3,
+                    pointBackgroundColor: "#e74a3b",
+                    pointBorderColor: "#e74a3b",
+                    pointHoverRadius: 3,
+                    pointHoverBackgroundColor: "#e74a3b",
+                    pointHoverBorderColor: "#e74a3b",
+                    pointHitRadius: 10,
+                    pointBorderWidth: 2,
+                    data: deaths
+                },
+                {
+                    label: "Recovered",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(78, 115, 223, 0.05)",
+                    borderColor: "#1cc88a",
+                    pointRadius: 3,
+                    pointBackgroundColor: "#1cc88a",
+                    pointBorderColor: "#1cc88a",
+                    pointHoverRadius: 3,
+                    pointHoverBackgroundColor: "#1cc88a",
+                    pointHoverBorderColor: "#1cc88a",
+                    pointHitRadius: 10,
+                    pointBorderWidth: 2,
+                    data: recovered
                 }],
             },
             options: {

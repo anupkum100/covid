@@ -18,6 +18,7 @@
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
 
 </head>
 
@@ -52,11 +53,11 @@
         <a class="p-0" style="color: gray; font-size: 12px; cursor: pointer;">
           <table class="w-100">
             <tr class="text-center">
-              <th class="w-50 border"> Country</th>
-              <th class="w-25 border">Cases</th>
-              <th class="w-25 border"> Deaths</th>
+              <th class="w-50 border" ng-click="orderby='country_name'"> Country</th>
+              <th class="w-25 border" ng-click="orderby='-cases'">Cases</th>
+              <th class="w-25 border" ng-click="orderby='-deaths'"> Deaths</th>
             </tr>
-            <tr class="text-center" ng-repeat="country in countryWise | filter:searchText"
+            <tr class="text-center" ng-repeat="country in countryWise | filter:searchText | orderBy: orderby"
               ng-click="changeArea(country)">
               <td class="w-50 border"> <span class="">{{country.country_name}} </span></td>
               <td class="w-25 border"><span class="text-dark">{{country.cases}}</span></td>
@@ -89,8 +90,7 @@
 
           <!-- Content Row -->
           <div class="row">
-
-            <div class="col-xl-3 col-md-6 mb-4" ng-repeat="data in category">
+            <div class="col-xl-3 col-md-6 mb-4 col-sm-6" ng-repeat="data in category">
               <div ng-class='"border-left-" + data.class' class="card shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -124,9 +124,24 @@
           <!-- Content Row -->
 
           <div class="row">
+            <div ng-if="selectedArea === 'India'" class="col-lg-4">
+              <table class="w-100 mb-4">
+                <tr class="text-center">
+                  <th class="w-50 border"> State</th>
+                  <th class="w-25 border" ng-click="orderby='-value.totalIndianCases'">Cases</th>
+                  <th class="w-25 border" ng-click="orderby='-value.totalDeaths'"> Deaths</th>
+                </tr>
+                <tr class="text-center" ng-repeat="stateData in indainStateData | orderBy: orderby">
+                  <td class="w-50 border"> <span class="">{{stateData.key}} </span></td>
+                  <td class="w-25 border"><span class="text-dark">{{stateData.value.totalIndianCases}}</span>
+                  </td>
+                  <td class="w-25 border"> <span class="text-danger">{{stateData.value.totalDeaths}}</span></td>
+                </tr>
+              </table>
+            </div>
 
             <!-- Area Chart -->
-            <div class="col-xl-8 col-lg-7">
+            <div class="col-lg-4">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -157,7 +172,7 @@
             </div>
 
             <!-- Pie Chart -->
-            <div class="col-xl-4 col-lg-5">
+            <div class="col-lg-4">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -165,7 +180,7 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                  <div class="chart-pie pt-4 pb-2">
+                  <div id="chart-pie" class="chart-pie pt-4 pb-2">
                     <canvas id="myPieChart"></canvas>
                   </div>
                 </div>
@@ -183,7 +198,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019</span>
+            <span>Copyright &copy; Anup Kumar</span>
           </div>
         </div>
       </footer>

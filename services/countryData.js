@@ -2,6 +2,7 @@ var app = angular.module('myApp', []);
 app.controller('myCtrl', function ($scope, $http) {
     $scope.selectedArea = "World";
     $scope.indiaData = {};
+    $scope.isCountrySelected = false;
 
     $scope.category = [{
         label: 'Total Cases',
@@ -46,7 +47,8 @@ app.controller('myCtrl', function ($scope, $http) {
     });
 
     function getPercentage(category, total) {
-        return 100 * (parseInt((category).replace(',', '')) / parseInt((total).replace(',', ''))).toFixed(3)
+        let number = parseInt((category).replace(',', '')) / parseInt((total).replace(',', '')) * 100;
+        return number.toFixed(2)
     }
 
     $http({
@@ -69,9 +71,13 @@ app.controller('myCtrl', function ($scope, $http) {
         $scope.myWelcome = response.statusText;
     });
 
+    $scope.showCountryList = () => {
+        $scope.isCountrySelected = !$scope.isCountrySelected;
+    }
 
     $scope.changeArea = (country) => {
         $scope.selectedArea = country.country_name;
+        $scope.isCountrySelected = true;
         if (country === 'World') {
             $scope.category[0].value = $scope.worldData.total_cases;
             $scope.category[1].value = $scope.worldData.total_deaths;
@@ -262,6 +268,12 @@ app.controller('myCtrl', function ($scope, $http) {
         }, function myError(response) {
             $scope.myWelcome = response.statusText;
         });
+    }
+
+    $scope.getStyle = (percentage) => {
+        return {
+            width: percentage + '%'
+        }
     }
 
 

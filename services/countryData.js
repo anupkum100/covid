@@ -77,7 +77,7 @@ app.controller('myCtrl', function ($scope, $http) {
 
     $scope.changeArea = (country) => {
         $scope.selectedArea = country.country_name;
-        $scope.isCountrySelected = true;
+        $scope.showCountryList();
         if (country === 'World') {
             $scope.category[0].value = $scope.worldData.total_cases;
             $scope.category[1].value = $scope.worldData.total_deaths;

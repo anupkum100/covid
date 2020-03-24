@@ -5,7 +5,7 @@ app.controller('myCtrl', function ($scope, $http) {
     $scope.indiaData = {};
     $scope.indainStateData = {};
     $scope.isCountrySelected = false;
-    $scope.isApiCallInProgress = false;
+    $scope.isApiCallInProgress = true;
 
     $scope.category = [{
         label: 'Total Cases',

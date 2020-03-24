@@ -8,12 +8,16 @@ th {
   margin-right: 10px;
 }
 
-text{
-    display: none !important;
+text {
+  display: none !important;
 }
 
-small{
-    font-size: 10px;
+small {
+  font-size: 10px;
+}
+
+.tt_mobile_sm a {
+  display: none !important;
 }
 
 .loaderContainer {

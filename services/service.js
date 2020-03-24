@@ -45,7 +45,7 @@ simplemaps_countrymap_mapdata = {
         initial_zoom_solo: "no",
         region_opacity: 1,
         region_hover_opacity: 0.6,
-        zoom_out_incrementally: "yes",
+        zoom_out_incrementally: "no",
         zoom_percentage: 0.99,
         zoom_time: 0.5,
 
@@ -68,12 +68,12 @@ simplemaps_countrymap_mapdata = {
         state_image_url: "",
         state_image_position: "",
         location_image_url: "",
-        manual_zoom: "yes"
+        manual_zoom: "no"
     },
     state_specific: {
         "1": {
             name: "Andaman and Nicobar",
-            description: "0"
+            description: "0",
         },
         "2": {
             name: "Andhra Pradesh",
@@ -200,7 +200,7 @@ simplemaps_countrymap_mapdata = {
             description: "0"
         },
         "34": {
-            name: "Uttaranchal",
+            name: "Uttarakhand",
             description: "0"
         },
         "35": {
@@ -233,9 +233,24 @@ $.get("https://ameerthehacker.github.io/corona-india-status/covid19-indian-state
     $.holdReady(false);
     Object.keys(simplemaps_countrymap_mapdata.state_specific).forEach((stateData, index) => {
         if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name]) {
-            simplemaps_countrymap_mapdata.state_specific[stateData].description = 'Total:' + response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases + '</br>' + 
-            '<span class="text-danger">Deaths:' + response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalDeaths + '</span></br>' + 
-            '<span class="text-info">Recovered:' + response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalRecovered + '</span>'
+            simplemaps_countrymap_mapdata.state_specific[stateData].description = 'Total:' + response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases + '</br>' +
+                '<span class="text-danger">Deaths:' + response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalDeaths + '</span></br>' +
+                '<span class="text-info">Recovered:' + response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalRecovered + '</span>';
+            if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases > 0) {
+                simplemaps_countrymap_mapdata.state_specific[stateData].color = '#FFD0C2';
+            }
+            if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases > 5) {
+                simplemaps_countrymap_mapdata.state_specific[stateData].color = '#FF8A83';
+            }
+            if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases > 20) {
+                simplemaps_countrymap_mapdata.state_specific[stateData].color = '#D65F59';
+            }
+            if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases > 50) {
+                simplemaps_countrymap_mapdata.state_specific[stateData].color = '#C23210';
+            }
+            if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases > 100) {
+                simplemaps_countrymap_mapdata.state_specific[stateData].color = '#991101';
+            }
         }
 
     })

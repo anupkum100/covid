@@ -57,11 +57,13 @@
               <th class="w-25 border" ng-click="orderby='-cases'">Cases</th>
               <th class="w-25 border" ng-click="orderby='-deaths'"> Deaths</th>
             </tr>
-            <tr class="text-center" ng-repeat="country in countryWise | filter:searchText | orderBy: orderby"
-              ng-click="changeArea(country)">
-              <td class="w-50 border"> <span class="">{{country.country_name}} </span></td>
-              <td class="w-25 border"><span class="text-dark">{{country.cases}}</span></td>
-              <td class="w-25 border"> <span class="text-danger">{{country.deaths}}</span></td>
+            <tr class="text-center" ng-repeat="countryData in countryWise | filter:searchText | orderBy: orderby"
+              ng-click="changeArea(countryData)">
+              <td class="w-50 border"> <span class="">
+                  <img class="flag" ng-src="{{countryData.countryInfo.flag}}">{{countryData.country}}
+                </span></td>
+              <td class="w-25 border"><span class="text-dark">{{countryData.cases}}</span></td>
+              <td class="w-25 border"> <span class="text-danger">{{countryData.deaths}}</span></td>
             </tr>
           </table>
         </a>
@@ -125,6 +127,7 @@
 
           <div class="row">
             <div ng-if="selectedArea === 'India'" class="col-lg-4">
+              <small class="text-danger">Note: Coutry overall data and statewise data might vary.</small>
               <table class="w-100 mb-4">
                 <tr class="text-center">
                   <th class="w-50 border"> State</th>
@@ -138,6 +141,11 @@
                   <td class="w-25 border"> <span class="text-danger">{{stateData.value.totalDeaths}}</span></td>
                 </tr>
               </table>
+            </div>
+
+            <!-- India Map -->
+            <div ng-show="selectedArea === 'India'" class="col-lg-4">
+              <div id="map"></div>
             </div>
 
             <!-- Area Chart -->
@@ -164,24 +172,8 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                  <div class="chart-area">
+                  <div class="chart-area1">
                     <canvas id="myAreaChart"></canvas>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Pie Chart -->
-            <div class="col-lg-4">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Casualties</h6>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                  <div id="chart-pie" class="chart-pie pt-4 pb-2">
-                    <canvas id="myPieChart"></canvas>
                   </div>
                 </div>
               </div>
@@ -192,6 +184,11 @@
         <!-- /.container-fluid -->
 
       </div>
+
+      <!-- Map -->
+      <!-- <div class="map-container">
+        <div id="map"></div>
+      </div> -->
       <!-- End of Main Content -->
 
       <!-- Footer -->
@@ -222,6 +219,9 @@
   <script src="./services/countryData.js"></script>
 
   <script src="services/chart/Chart.min.js"></script>
+
+  <script src="./services/service.js"></script>
+  <script src="map/countrymap.js"></script>
   <!-- <script src="services/chart/chart-pie-demo.js"></script> -->
 
 </body>

@@ -3,6 +3,19 @@ th {
   cursor: pointer;
 }
 
+.flag {
+  height: 10px;
+  margin-right: 10px;
+}
+
+text{
+    display: none !important;
+}
+
+small{
+    font-size: 10px;
+}
+
 .loaderContainer {
   position: fixed;
   background-color: rgb(0, 0, 0, 0.6);

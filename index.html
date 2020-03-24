@@ -45,7 +45,7 @@
       <input placeholder="Search..." ng-model="searchText"></label>
       <li class="nav-item active">
         <a class="p-0 pl-2" style="color: white; font-size: 10px; cursor: pointer;" ng-click="changeArea('World')">
-          <span class="">World</span>
+          <span class="text-dark">World</span>
         </a>
       </li>
 
@@ -206,6 +206,11 @@
 
     </div>
     <!-- End of Content Wrapper -->
+
+    <div ng-if="isApiCallInProgress" class="loaderContainer">
+      <div class="loader"></div>
+    </div>
+
 
   </div>
   <!-- End of Page Wrapper -->

@@ -1,9 +1,11 @@
+// ALl country data : https://pomber.github.io/covid19/timeseries.json
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function ($scope, $http) {
     $scope.selectedArea = "World";
     $scope.indiaData = {};
     $scope.indainStateData = {};
     $scope.isCountrySelected = false;
+    $scope.isApiCallInProgress = true;
 
     $scope.category = [{
         label: 'Total Cases',
@@ -33,18 +35,20 @@ app.controller('myCtrl', function ($scope, $http) {
             "x-rapidapi-key": "1c6e772606msh3c10d4d01ae157bp1dee68jsne1d22692e58a"
         }
     }).then(function mySuccess(response) {
+        $scope.isApiCallInProgress = false;
         $scope.worldData = response.data;
-        $scope.category[0].value = response.data.total_cases;
-        $scope.category[1].value = response.data.total_deaths;
-        $scope.category[2].value = response.data.total_recovered;
-        $scope.category[3].value = response.data.new_cases;
+        if ($scope.selectedArea === 'World') {
+            $scope.category[0].value = response.data.total_cases;
+            $scope.category[1].value = response.data.total_deaths;
+            $scope.category[2].value = response.data.total_recovered;
+            $scope.category[3].value = response.data.new_cases;
 
-        $scope.category[1].percentage = getPercentage(response.data.total_deaths, response.data.total_cases);
-        $scope.category[2].percentage = getPercentage(response.data.total_recovered, response.data.total_cases);
-        $scope.category[3].percentage = getPercentage(response.data.new_cases, response.data.total_cases);
+            $scope.category[1].percentage = getPercentage(response.data.total_deaths, response.data.total_cases);
+            $scope.category[2].percentage = getPercentage(response.data.total_recovered, response.data.total_cases);
+            $scope.category[3].percentage = getPercentage(response.data.new_cases, response.data.total_cases);
 
-        createPieChart();
-
+            createPieChart();
+        }
     }, function myError(response) {
         $scope.worldData = {};
     });
@@ -54,6 +58,8 @@ app.controller('myCtrl', function ($scope, $http) {
         return number.toFixed(2)
     }
 
+    $scope.isApiCallInProgress = true;
+
     $http({
         method: "GET",
         url: "https://coronavirus-monitor.p.rapidapi.com/coronavirus/cases_by_country.php",
@@ -62,11 +68,13 @@ app.controller('myCtrl', function ($scope, $http) {
             "x-rapidapi-key": "1c6e772606msh3c10d4d01ae157bp1dee68jsne1d22692e58a"
         }
     }).then(function mySuccess(response) {
+        $scope.isApiCallInProgress = false;
         $scope.countryWise = response.data.countries_stat;
 
         response.data.countries_stat.forEach(countryData => {
             if (countryData.country_name === 'India') {
                 $scope.indiaData = countryData
+                $scope.changeArea($scope.indiaData);
             }
         })
     }, function myError(response) {
@@ -81,6 +89,7 @@ app.controller('myCtrl', function ($scope, $http) {
         $scope.selectedArea = country.country_name;
         $scope.showCountryList();
         if (country === 'World') {
+            $scope.selectedArea = country;
             $scope.category[0].value = $scope.worldData.total_cases;
             $scope.category[1].value = $scope.worldData.total_deaths;
             $scope.category[2].value = $scope.worldData.total_recovered;

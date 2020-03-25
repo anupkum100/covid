@@ -59,7 +59,7 @@ simplemaps_countrymap_mapdata = {
 
         //Advanced settings
         div: "map",
-        auto_load: "yes",
+        auto_load: "no",
         url_new_tab: "no",
         images_directory: "default",
         fade_time: 0.1,
@@ -228,9 +228,8 @@ simplemaps_countrymap_mapdata = {
     regions: {}
 };
 
-$.holdReady(true);
+// $.holdReady(true);
 $.get("https://ameerthehacker.github.io/corona-india-status/covid19-indian-states.json", function (response) {
-    $.holdReady(false);
     Object.keys(simplemaps_countrymap_mapdata.state_specific).forEach((stateData, index) => {
         if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name]) {
             simplemaps_countrymap_mapdata.state_specific[stateData].description = 'Total:' + response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases + '</br>' +
@@ -251,8 +250,8 @@ $.get("https://ameerthehacker.github.io/corona-india-status/covid19-indian-state
             if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases > 100) {
                 simplemaps_countrymap_mapdata.state_specific[stateData].color = '#991101';
             }
+            simplemaps_countrymap.load();
         }
-
     })
 
 })

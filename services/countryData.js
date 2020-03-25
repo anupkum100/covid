@@ -51,14 +51,13 @@ app.controller('myCtrl', function ($scope, $http) {
             $scope.category[2].percentage = getPercentage(response.data.total_recovered, response.data.total_cases);
             $scope.category[3].percentage = getPercentage(response.data.new_cases, response.data.total_cases);
 
-            createPieChart();
         }
     }, function myError(response) {
         $scope.worldData = {};
     });
 
     function getPercentage(category, total) {
-        let number = category / total
+        let number = 100 * category / total
         return number.toFixed(2)
     }
 

@@ -41,7 +41,6 @@ app.controller('myCtrl', function ($scope, $http) {
             "x-rapidapi-key": "1c6e772606msh3c10d4d01ae157bp1dee68jsne1d22692e58a"
         }
     }).then(function mySuccess(response) {
-        $scope.isApiCallInProgress = false;
         $scope.worldData = response.data;
         if ($scope.headerText === 'World') {
             $scope.category[0].value = response.data.total_cases;

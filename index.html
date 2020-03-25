@@ -32,10 +32,14 @@
       ng-class="isCountrySelected ? 'w-0 d-none' : ''" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="text-light border btn btn-primary sidebar-brand d-flex align-items-center justify-content-center"
-        ng-click="changeArea(indiaData)">
-        India Data
-      </a>
+
+      <div class="top-menu row m-0">
+        <div class="options col-4 border" ng-click="changeArea(indiaData)">
+          India Data
+        </div>
+        <div class="options col-4 border" ng-click="changeArea('World')">World Data</div>
+        <div class="options col-4 border" ng-click="showOnlyMyths()">Myths</div>
+      </div>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
@@ -43,12 +47,6 @@
       <!-- Nav Item - Dashboard -->
 
       <input placeholder="Search..." ng-model="searchText"></label>
-      <li class="nav-item active">
-        <a class="p-0 pl-2" style="color: white; font-size: 10px; cursor: pointer;" ng-click="changeArea('World')">
-          <span class="text-dark">World</span>
-        </a>
-      </li>
-
       <li class="nav-item active">
         <a class="p-0" style="color: gray; font-size: 12px; cursor: pointer;">
           <table class="w-100">
@@ -81,107 +79,109 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between">
             <span ng-click="showCountryList()" class="d-inline-block mr-3" style="cursor:pointer;
-            transform: rotate(90deg);
-            font-size: 30px;">|||</span>
-            <h1 class="h3 mb-0 text-gray-800 d-inline">{{selectedArea}}</h1>
+          transform: rotate(90deg);
+          font-size: 30px;">|||</span>
+            <h1 class="h3 mb-0 text-gray-800 d-inline">{{headerText}}</h1>
             <pre class="text-muted text-right">Last Updated {{worldData.statistic_taken_at}}</pre>
           </div>
 
-          <!-- Content Row -->
-          <div class="row">
-            <div class="col-xl-3 col-md-6 mb-4 col-sm-6" ng-repeat="data in category">
-              <div ng-class='"border-left-" + data.class' class="card shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2 text-center">
-                      <div ng-class='"text-" + data.class' class="text-xs font-weight-bold text-uppercase mb-1">
-                        {{data.label}}</div>
-                      <div class="h3 mb-0 font-weight-bold" ng-class='"text-" + data.class'>{{data.value}}</div>
-
-                      <div ng-if="data.percentage" class="row no-gutters align-items-center">
-                        <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{data.percentage}}%</div>
-                        </div>
-                        <div class="col">
-                          <div class="progress progress-sm mr-2">
-                            <div class="progress-bar bg-info" role="progressbar" ng-style="getStyle(data.percentage)"
-                              aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div ng-show="showMyths" class="d-lg-block w-100 ng-hide h-100">
+            <iframe class="w-100 h-100" id="myIframe"
+              src="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public/myth-busters"></iframe>
           </div>
 
-          <!-- Content Row -->
+          <div ng-show="!showMyths">
+            <div class="row">
+              <div class="col-xl-3 col-md-6 mb-4 col-sm-6" ng-repeat="data in category">
+                <div ng-class='"border-left-" + data.class' class="card shadow h-100 py-2">
+                  <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                      <div class="col mr-2 text-center">
+                        <div ng-class='"text-" + data.class' class="text-xs font-weight-bold text-uppercase mb-1">
+                          {{data.label}}</div>
+                        <div class="h3 mb-0 font-weight-bold" ng-class='"text-" + data.class'>{{data.value}}</div>
 
-          <div class="row">
-            <div ng-if="selectedArea === 'India'" class="col-lg-4">
-              <small class="text-danger">Note: Coutry overall data and statewise data might vary.</small>
-              <table class="w-100 mb-4">
-                <tr class="text-center">
-                  <th class="w-50 border"> State</th>
-                  <th class="w-25 border" ng-click="orderby='-value.totalIndianCases'">Cases</th>
-                  <th class="w-25 border" ng-click="orderby='-value.totalDeaths'"> Deaths</th>
-                </tr>
-                <tr class="text-center" ng-repeat="stateData in indainStateData | orderBy: orderby">
-                  <td class="w-50 border"> <span class="">{{stateData.key}} </span></td>
-                  <td class="w-25 border"><span class="text-dark">{{stateData.value.totalIndianCases}}</span>
-                  </td>
-                  <td class="w-25 border"> <span class="text-danger">{{stateData.value.totalDeaths}}</span></td>
-                </tr>
-              </table>
-            </div>
+                        <div ng-if="data.percentage" class="row no-gutters align-items-center">
+                          <div class="col-auto">
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{data.percentage}}%</div>
+                          </div>
+                          <div class="col">
+                            <div class="progress progress-sm mr-2">
+                              <div class="progress-bar bg-info" role="progressbar" ng-style="getStyle(data.percentage)"
+                                aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                          </div>
+                        </div>
 
-            <!-- India Map -->
-            <div ng-show="selectedArea === 'India'" class="col-lg-4">
-              <div class="map-legend">
-                <div><span style="background-color: #88A4BC;"></span><small class="ml-1">0</small></div>
-                <div><span style="background-color: #FFD0C2;"></span><small class="ml-1">0-5</small></div>
-                <div><span style="background-color: #FF8A83;"></span><small class="ml-1">5-20</small></div>
-                <div><span style="background-color: #D65F59;"></span><small class="ml-1">20-50</small></div>
-                <div><span style="background-color: #C23210;"></span><small class="ml-1">50-100</small></div>
-                <div><span style="background-color: #991101;"></span><small class="ml-1">100+</small></div>
-              </div>
-              <div id="map"></div>
-            </div>
-
-            <!-- Area Chart -->
-            <div class="col-lg-4">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">
-                    {{selectedArea === 'World' ? 'Select Country' : selectedArea + ' Total Cases'}}</h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                      aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                      aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Something else here</a>
+                      </div>
+                      <div class="col-auto">
+                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                  <div class="chart-area1">
-                    <canvas id="myAreaChart"></canvas>
+              </div>
+            </div>
+            <div class="row">
+              <div ng-if="headerText === 'India'" class="col-lg-4">
+                <small class="text-danger">Note: Coutry overall data and statewise data might vary.</small>
+                <table class="w-100 mb-4">
+                  <tr class="text-center">
+                    <th class="w-50 border"> State</th>
+                    <th class="w-25 border" ng-click="orderby='-value.totalIndianCases'">Cases</th>
+                    <th class="w-25 border" ng-click="orderby='-value.totalDeaths'"> Deaths</th>
+                  </tr>
+                  <tr class="text-center" ng-repeat="stateData in indainStateData | orderBy: orderby">
+                    <td class="w-50 border"> <span class="">{{stateData.key}} </span></td>
+                    <td class="w-25 border"><span class="text-dark">{{stateData.value.totalIndianCases}}</span>
+                    </td>
+                    <td class="w-25 border"> <span class="text-danger">{{stateData.value.totalDeaths}}</span></td>
+                  </tr>
+                </table>
+              </div>
+
+              <!-- India Map -->
+              <div ng-show="headerText === 'India'" class="col-lg-4">
+                <div class="map-legend">
+                  <div><span style="background-color: #88A4BC;"></span><small class="ml-1">0</small></div>
+                  <div><span style="background-color: #FFD0C2;"></span><small class="ml-1">0-5</small></div>
+                  <div><span style="background-color: #FF8A83;"></span><small class="ml-1">5-20</small></div>
+                  <div><span style="background-color: #D65F59;"></span><small class="ml-1">20-50</small></div>
+                  <div><span style="background-color: #C23210;"></span><small class="ml-1">50-100</small></div>
+                  <div><span style="background-color: #991101;"></span><small class="ml-1">100+</small></div>
+                </div>
+                <div id="map"></div>
+              </div>
+
+              <!-- Area Chart -->
+              <div class="col-lg-4">
+                <div class="card shadow mb-4">
+                  <!-- Card Header - Dropdown -->
+                  <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                      {{headerText === 'World' ? 'Select Country' : headerText + ' Total Cases'}}</h6>
+                    <div class="dropdown no-arrow">
+                      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                        aria-labelledby="dropdownMenuLink">
+                        <div class="dropdown-header">Dropdown Header:</div>
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Card Body -->
+                  <div class="card-body">
+                    <div class="chart-area1">
+                      <canvas id="myAreaChart"></canvas>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -189,18 +189,13 @@
           </div>
 
         </div>
-        <!-- /.container-fluid -->
 
       </div>
-
-      <!-- Map -->
-      <!-- <div class="map-container">
-        <div id="map"></div>
-      </div> -->
-      <!-- End of Main Content -->
-
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
+        <div>
+
+        </div>
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
             <span>Copyright &copy; Anup Kumar</span>

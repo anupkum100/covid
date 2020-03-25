@@ -1,11 +1,13 @@
 // ALl country data : https://pomber.github.io/covid19/timeseries.json
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function ($scope, $http) {
-    $scope.selectedArea = "World";
+    $scope.headerText = "World";
     $scope.indiaData = {};
     $scope.indainStateData = {};
     $scope.isCountrySelected = false;
     $scope.isApiCallInProgress = true;
+    $scope.showFacts = false;
+    $scope.showMyths = false;
 
     $scope.category = [{
         label: 'Total Cases',
@@ -41,7 +43,7 @@ app.controller('myCtrl', function ($scope, $http) {
     }).then(function mySuccess(response) {
         $scope.isApiCallInProgress = false;
         $scope.worldData = response.data;
-        if ($scope.selectedArea === 'World') {
+        if ($scope.headerText === 'World') {
             $scope.category[0].value = response.data.total_cases;
             $scope.category[1].value = response.data.total_deaths;
             $scope.category[2].value = response.data.total_recovered;
@@ -63,13 +65,14 @@ app.controller('myCtrl', function ($scope, $http) {
 
     $scope.showCountryList = () => {
         $scope.isCountrySelected = !$scope.isCountrySelected;
+        $scope.showMyths = false;
     }
 
     $scope.changeArea = (countryData) => {
-        $scope.selectedArea = countryData.country;
+        $scope.headerText = countryData.country;
         $scope.showCountryList();
         if (countryData === 'World') {
-            $scope.selectedArea = countryData;
+            $scope.headerText = countryData;
             $scope.category[0].value = $scope.worldData.total_cases;
             $scope.category[1].value = $scope.worldData.total_deaths;
             $scope.category[2].value = $scope.worldData.total_recovered;
@@ -82,7 +85,6 @@ app.controller('myCtrl', function ($scope, $http) {
         } else {
             updateAllData(countryData);
         }
-
     }
 
     function getIndianStateData() {
@@ -233,7 +235,7 @@ app.controller('myCtrl', function ($scope, $http) {
     function getHistoryData() {
         $http({
             method: "GET",
-            url: "https://coronavirus-monitor.p.rapidapi.com/coronavirus/cases_by_particular_country.php?country=" + $scope.selectedArea,
+            url: "https://coronavirus-monitor.p.rapidapi.com/coronavirus/cases_by_particular_country.php?country=" + $scope.headerText,
             headers: {
                 "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
                 "x-rapidapi-key": "1c6e772606msh3c10d4d01ae157bp1dee68jsne1d22692e58a"
@@ -265,6 +267,7 @@ app.controller('myCtrl', function ($scope, $http) {
     }
 
     function getData(url) {
+        $scope.isApiCallInProgress = true;
         $http({
             method: "GET",
             url
@@ -279,6 +282,12 @@ app.controller('myCtrl', function ($scope, $http) {
             })
         }, function myError(response) {
         });
+    }
+
+    $scope.showOnlyMyths = () => {
+        $scope.showMyths = true;
+        $scope.isCountrySelected = true;
+        $scope.headerText = "Myths";
     }
 
 

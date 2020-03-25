@@ -84,3 +84,15 @@ small {
     margin: 0 0 0 10px !important;
   }
 }
+
+.top-menu .options {
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  background: darksalmon;
+  color: white;
+}
+
+.container-fluid {
+  height: calc(100ch);
+}

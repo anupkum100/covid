@@ -228,8 +228,7 @@ simplemaps_countrymap_mapdata = {
     regions: {}
 };
 
-// $.holdReady(true);
-$.get("https://ameerthehacker.github.io/corona-india-status/covid19-indian-states.json", function (response) {
+$.get("https://ameerthehacker.github.io/corona-india-status/covid19-indian-states.json", (response) => {
     Object.keys(simplemaps_countrymap_mapdata.state_specific).forEach((stateData, index) => {
         if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name]) {
             simplemaps_countrymap_mapdata.state_specific[stateData].description = 'Total:' + response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases + '</br>' +

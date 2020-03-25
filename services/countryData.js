@@ -290,5 +290,9 @@ app.controller('myCtrl', function ($scope, $http) {
         $scope.headerText = "Myths";
     }
 
+    $scope.clearText = () => {
+        $scope.searchText = '';
+    }
+
 
 });

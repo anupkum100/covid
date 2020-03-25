@@ -91,8 +91,30 @@ small {
   cursor: pointer;
   background: darksalmon;
   color: white;
+  font-size: 12px;
+  line-height: 30px;
 }
 
 .container-fluid {
   height: calc(100ch);
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.clearBtn {
+  right: 10px;
+  font-size: 10px;
+  line-height: 30px;
+  color: orange;
+  cursor: pointer;
+}
+
+.labelText {
+  color: gray;
+  font-size: 12px;
+  cursor: pointer;
 }

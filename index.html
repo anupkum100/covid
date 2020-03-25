@@ -28,7 +28,7 @@
   <div id="wrapper" ng-app="myApp" ng-controller="myCtrl">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav sidebar-dark accordion" style="width: -webkit-fill-available;"
+    <ul class="navbar-nav sidebar-dark accordion mb-2" style="width: -webkit-fill-available;"
       ng-class="isCountrySelected ? 'w-0 d-none' : ''" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
@@ -46,9 +46,13 @@
 
       <!-- Nav Item - Dashboard -->
 
-      <input placeholder="Search..." ng-model="searchText"></label>
+      <label class="position-relative">
+        <input class="w-100 labelText" placeholder="Search..." ng-model="searchText">
+        <span ng-if="searchText.length > 0" class="position-absolute clearBtn" ng-click="clearText()">Clear</span>
+      </label>
+
       <li class="nav-item active">
-        <a class="p-0" style="color: gray; font-size: 12px; cursor: pointer;">
+        <a class="p-0 labelText">
           <table class="w-100">
             <tr class="text-center">
               <th class="w-50 border" ng-click="orderby='country_name'"> Country</th>
@@ -84,7 +88,7 @@
           transform: rotate(90deg);
           font-size: 30px;">|||</span>
             <h1 class="h3 mb-0 text-gray-800 d-inline">{{headerText}}</h1>
-            <pre class="text-muted text-right">Last Updated {{worldData.statistic_taken_at}}</pre>
+            <small class="text-muted text-right fl-right">Last Updated {{worldData.statistic_taken_at}}</small>
           </div>
 
           <div ng-show="showMyths" class="d-lg-block w-100 ng-hide h-100">
@@ -126,7 +130,7 @@
             </div>
             <div class="row">
               <div ng-if="headerText === 'India'" class="col-lg-4">
-                <small class="text-danger">Note: Coutry overall data and statewise data might vary.</small>
+                <small class="text-danger">Note: Country overall data and statewise data might vary.</small>
                 <table class="w-100 mb-4">
                   <tr class="text-center">
                     <th class="w-50 border"> State</th>
@@ -191,18 +195,6 @@
         </div>
 
       </div>
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div>
-
-        </div>
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Anup Kumar</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
 
     </div>
     <!-- End of Content Wrapper -->
@@ -210,6 +202,12 @@
     <div ng-if="isApiCallInProgress" class="loaderContainer">
       <div class="loader"></div>
     </div>
+
+    <!-- Footer -->
+    <footer class="sticky-footer bg-white text-center p-0">
+      <span>Copyright &copy; Anup Kumar</span>
+    </footer>
+    <!-- End of Footer -->
 
 
   </div>

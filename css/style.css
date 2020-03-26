@@ -83,6 +83,22 @@ small {
     font-size: 10px;
     margin: 0 0 0 10px !important;
   }
+  #myIframe {
+    min-height: calc(50ch);
+  }
+  .gotop {
+    display: block !important;
+    background: rgb(122, 122, 122, 0.6);
+    position: fixed;
+    bottom: 100px;
+    left: 9px;
+    height: 40px;
+    width: 40px;
+    border-radius: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: #fff;
+  }
 }
 
 .top-menu .options {
@@ -115,6 +131,15 @@ footer {
   cursor: pointer;
 }
 
-#myIframe{
-    min-height: calc(50ch);
+#myIframe {
+  min-height: calc(90ch);
+}
+
+.gotop {
+  display: none;
+}
+
+.news-container {
+  box-shadow: 0px 10px 10px #666;
+  border-radius: 5px;
 }

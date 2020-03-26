@@ -34,11 +34,12 @@
       <!-- Sidebar - Brand -->
 
       <div class="top-menu row m-0">
-        <div class="options col-4 border" ng-click="changeArea(indiaData)">
-          India Data
+        <div class="options col-3 border" ng-click="changeArea(indiaData)">
+          India
         </div>
-        <div class="options col-4 border" ng-click="changeArea('World')">World Data</div>
-        <div class="options col-4 border" ng-click="showOnlyMyths()">Myths</div>
+        <div class="options col-3 border" ng-click="changeArea('World')">World</div>
+        <div class="options col-3 border" ng-click="showOnlyNews()">News</div>
+        <div class="options col-3 border" ng-click="showOnlyMyths()">Myths</div>
       </div>
 
       <!-- Divider -->
@@ -81,7 +82,7 @@
       <div id="content">
 
         <!-- Begin Page Content -->
-        <div class="container-fluid" ng-class="showMyths ? 'p-0' : ''">
+        <div class="container-fluid">
 
           <div class="d-sm-flex align-items-center justify-content-between">
             <span ng-click="showCountryList()" class="d-inline-block mr-3" style="cursor:pointer;
@@ -91,12 +92,25 @@
             <!-- <small class="text-muted text-right fl-right">Last Updated {{worldData.statistic_taken_at}}</small> -->
           </div>
 
+          <div ng-show="showNews" class="row">
+            <div ng-repeat="news in newsList" class="col-xl-3 col-md-6 mb-4 news-container">
+              <img class="w-100 newsImage" ng-src="{{news.urlToImage}}" />
+              <div class="row mt-1">
+                <small class="col-6">Source: {{news.source.name}}</small>
+                <small class="col-6 text-right">{{news.publishedAt}}</small>
+              </div>
+
+              <h4>{{news.title}}</h4>
+              <p>{{news.description}}<a ng-href="{{news.url}}" target='_blank'>Read More</a></p>
+            </div>
+          </div>
+
           <div ng-show="showMyths" class="d-lg-block w-100 ng-hide h-100">
             <iframe class="w-100 h-100" id="myIframe"
               src="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public/myth-busters"></iframe>
           </div>
 
-          <div ng-show="!showMyths">
+          <div ng-show="!showMyths && !showNews">
             <div class="row">
               <div class="col-xl-3 col-md-6 mb-4 col-sm-6" ng-repeat="data in category">
                 <div ng-class='"border-left-" + data.class' class="card shadow h-100 py-2">
@@ -164,22 +178,12 @@
                 <div class="card shadow mb-4">
                   <!-- Card Header - Dropdown -->
                   <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">
-                      {{headerText + ' Total Cases'}}</h6>
-                    <div class="dropdown no-arrow">
-                      <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                      </a>
-                      <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                        aria-labelledby="dropdownMenuLink">
-                        <div class="dropdown-header">Dropdown Header:</div>
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                      </div>
-                    </div>
+                    <small class="m-0 text-info">
+                      {{headerText}} :
+                      <span class="text-primary">Cases</span> |
+                      <span class="text-danger">Deaths</span> |
+                      <span class="text-success">Recovered</span>
+                    </small>
                   </div>
                   <!-- Card Body -->
                   <div class="card-body">
@@ -202,6 +206,8 @@
     <div ng-if="isApiCallInProgress" class="loaderContainer">
       <div class="loader"></div>
     </div>
+
+    <div class="gotop" id="scrollBtn" ng-click="scrollTop()">^</div>
 
     <!-- Footer -->
     <footer class="sticky-footer bg-white text-center p-0">

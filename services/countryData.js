@@ -8,6 +8,7 @@ app.controller('myCtrl', function ($scope, $http) {
     $scope.isApiCallInProgress = true;
     $scope.showFacts = false;
     $scope.showMyths = false;
+    $scope.showNews = false;
 
     $scope.worldData = {
         cases: 0,
@@ -51,6 +52,7 @@ app.controller('myCtrl', function ($scope, $http) {
     $scope.changeArea = (countryData) => {
         $scope.headerText = countryData.country;
         $scope.showMyths = false;
+        $scope.showNews = false;
         $scope.showCountryList();
         if (countryData === 'World') {
             $scope.headerText = countryData;
@@ -73,6 +75,7 @@ app.controller('myCtrl', function ($scope, $http) {
             method: "GET",
             url: "https://ameerthehacker.github.io/corona-india-status/covid19-indian-states.json"
         }).then(function mySuccess(response) {
+
             $scope.indainStateData = Object.keys(response.data.data).map((stateData) => {
                 if (stateData.match('#') !== null) {
                     return
@@ -274,14 +277,55 @@ app.controller('myCtrl', function ($scope, $http) {
         });
     }
 
+    function getNews(url) {
+        $scope.isApiCallInProgress = true;
+        $http({
+            method: "GET",
+            url
+        }).then(function mySuccess(response) {
+            $scope.isApiCallInProgress = false;
+            $scope.newsList = response.data.articles;
+        }, function myError(response) {
+        });
+    }
+
     $scope.showOnlyMyths = () => {
+        recetAll();
         $scope.showMyths = true;
-        $scope.isCountrySelected = true;
         $scope.headerText = "Myths";
+    }
+
+    $scope.showOnlyNews = () => {
+        getNews("https://newsapi.org/v2/top-headlines?country=in&q=corona&apiKey=f6a1d6ea77354f8b96a6b6938ce8618a");
+        recetAll();
+        $scope.showNews = true;
+        $scope.headerText = "News";
+    }
+
+    function recetAll() {
+        $scope.headerText = "";
+        $scope.showMyths = false;
+        $scope.isCountrySelected = true;
+        $scope.showNews = false;
     }
 
     $scope.clearText = () => {
         $scope.searchText = '';
+    }
+
+    $scope.scrollTop = () => {
+        window.scrollTo(-10, 0);
+    }
+
+    window.onscroll = function () { scrollFunction() };
+
+    mybutton = document.getElementById("scrollBtn");
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
     }
 
 

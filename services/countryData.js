@@ -74,14 +74,14 @@ app.controller('myCtrl', function ($scope, $http) {
             url: "https://ameerthehacker.github.io/corona-india-status/covid19-indian-states.json"
         }).then(function mySuccess(response) {
             $scope.indainStateData = Object.keys(response.data.data).map((stateData) => {
-                if (!stateData.match('#') === null) {
+                if (stateData.match('#') !== null) {
                     return
-                } else {
-                    return {
-                        key: stateData,
-                        value: response.data.data[stateData]
-                    }
                 }
+                return {
+                    key: stateData,
+                    value: response.data.data[stateData]
+                }
+
             });
         }, function myError(response) {
             $scope.myWelcome = response.statusText;

@@ -95,12 +95,8 @@ small {
   line-height: 30px;
 }
 
-.container-fluid {
-  height: calc(100ch);
-}
-
 footer {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   width: 100%;
 }
@@ -117,4 +113,8 @@ footer {
   color: gray;
   font-size: 12px;
   cursor: pointer;
+}
+
+#myIframe{
+    min-height: calc(50ch);
 }

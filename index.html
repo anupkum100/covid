@@ -28,7 +28,7 @@
   <div id="wrapper" ng-app="myApp" ng-controller="myCtrl">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav sidebar-dark accordion mb-2" style="width: -webkit-fill-available;"
+    <ul ng-if="!isCountrySelected" class="navbar-nav sidebar-dark accordion mb-2" style="width: -webkit-fill-available;"
       ng-class="isCountrySelected ? 'w-0 d-none' : ''" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
@@ -81,7 +81,7 @@
       <div id="content">
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        <div class="container-fluid" ng-class="showMyths ? 'p-0' : ''">
 
           <div class="d-sm-flex align-items-center justify-content-between">
             <span ng-click="showCountryList()" class="d-inline-block mr-3" style="cursor:pointer;
@@ -131,7 +131,7 @@
             <div class="row">
               <div ng-if="headerText === 'India'" class="col-lg-4">
                 <small class="text-danger">Note: Country overall data and statewise data might vary.</small>
-                <table class="w-100 mb-4">
+                <table class="w-100">
                   <tr class="text-center">
                     <th class="w-50 border"> State</th>
                     <th class="w-25 border" ng-click="orderby='-value.totalIndianCases'">Cases</th>

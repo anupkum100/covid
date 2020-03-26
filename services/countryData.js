@@ -42,17 +42,17 @@ app.controller('myCtrl', function ($scope, $http) {
         }
     }).then(function mySuccess(response) {
         $scope.worldData = response.data;
-        if ($scope.headerText === 'World') {
-            $scope.category[0].value = response.data.total_cases;
-            $scope.category[1].value = response.data.total_deaths;
-            $scope.category[2].value = response.data.total_recovered;
-            $scope.category[3].value = response.data.new_cases;
+        // if ($scope.headerText === 'World') {
+        //     $scope.category[0].value = parseInt(response.data.total_cases.replace(',', ''));
+        //     $scope.category[1].value = parseInt(response.data.total_deaths.replace(',', ''));
+        //     $scope.category[2].value = parseInt(response.data.total_recovered.replace(',', ''));
+        //     $scope.category[3].value = parseInt(response.data.new_cases.replace(',', ''));
 
-            $scope.category[1].percentage = getPercentage(response.data.total_deaths, response.data.total_cases);
-            $scope.category[2].percentage = getPercentage(response.data.total_recovered, response.data.total_cases);
-            $scope.category[3].percentage = getPercentage(response.data.new_cases, response.data.total_cases);
+        //     $scope.category[1].percentage = getPercentage(response.data.total_deaths, response.data.total_cases);
+        //     $scope.category[2].percentage = getPercentage(response.data.total_recovered, response.data.total_cases);
+        //     $scope.category[3].percentage = getPercentage(response.data.new_cases, response.data.total_cases);
 
-        }
+        // }
     }, function myError(response) {
         $scope.worldData = {};
     });
@@ -72,14 +72,15 @@ app.controller('myCtrl', function ($scope, $http) {
         $scope.showCountryList();
         if (countryData === 'World') {
             $scope.headerText = countryData;
-            $scope.category[0].value = $scope.worldData.total_cases;
-            $scope.category[1].value = $scope.worldData.total_deaths;
-            $scope.category[2].value = $scope.worldData.total_recovered;
-            $scope.category[3].value = $scope.worldData.new_cases;
+            $scope.category[0].value = parseInt($scope.worldData.total_cases.replace(',', ''));
+            $scope.category[1].value = parseInt($scope.worldData.total_deaths.replace(',', ''));
+            $scope.category[2].value = parseInt($scope.worldData.total_recovered.replace(',', ''));
+            $scope.category[3].value = parseInt($scope.worldData.new_cases.replace(',', ''));
 
-            $scope.category[1].percentage = getPercentage($scope.worldData.total_deaths, $scope.worldData.total_cases);
-            $scope.category[2].percentage = getPercentage($scope.worldData.total_recovered, $scope.worldData.total_cases);
-            $scope.category[3].percentage = getPercentage($scope.worldData.new_cases, $scope.worldData.total_cases);
+            debugger
+            $scope.category[1].percentage = getPercentage($scope.category[1].value, $scope.category[0].value);
+            $scope.category[2].percentage = getPercentage($scope.category[2].value, $scope.category[0].value);
+            $scope.category[3].percentage = getPercentage($scope.category[3].value, $scope.category[0].value);
 
         } else {
             updateAllData(countryData);

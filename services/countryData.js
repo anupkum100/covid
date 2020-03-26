@@ -99,7 +99,7 @@ app.controller('myCtrl', function ($scope, $http) {
         $scope.category[3].value = countryData.todayCases;
 
         $scope.category[1].percentage = getPercentage(countryData.deaths, countryData.cases);
-        $scope.category[2].percentage = getPercentage(countryData.todayCases, countryData.cases);
+        $scope.category[2].percentage = getPercentage(countryData.recovered, countryData.cases);
         $scope.category[3].percentage = getPercentage(countryData.todayCases, countryData.cases);
 
         getHistoryData();

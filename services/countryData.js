@@ -5,7 +5,8 @@ app.controller('myCtrl', function ($scope, $http) {
     $scope.indiaData = {};
     $scope.indainStateData = {};
     $scope.isCountrySelected = false;
-    $scope.isApiCallInProgress = true;
+    $scope.isApiCallInProgress = false;
+    $scope.isApiFailed - true;
     $scope.showFacts = false;
     $scope.showMyths = false;
     $scope.showNews = false;
@@ -243,7 +244,7 @@ app.controller('myCtrl', function ($scope, $http) {
             })
             createAreaChart();
         }, function myError(response) {
-            $scope.myWelcome = response.statusText;
+            $scope.isApiFailed = true;
         });
     }
 
@@ -274,6 +275,7 @@ app.controller('myCtrl', function ($scope, $http) {
                 }
             })
         }, function myError(response) {
+            $scope.isApiFailed = true;
         });
     }
 
@@ -286,10 +288,14 @@ app.controller('myCtrl', function ($scope, $http) {
             $scope.isApiCallInProgress = false;
             $scope.newsList = response.data.articles;
         }, function myError(response) {
+
         });
     }
 
-    $scope.showOnlyMyths = () => {
+    $scope.showOnlyMyths = (isOverlayOpen) => {
+        if (isOverlayOpen) {
+            $scope.isApiCallInProgress = false;
+        }
         recetAll();
         $scope.showMyths = true;
         $scope.headerText = "Myths";
@@ -317,16 +323,19 @@ app.controller('myCtrl', function ($scope, $http) {
         window.scrollTo(-10, 0);
     }
 
+    $scope.refreshPage = () => {
+        window.location.reload();
+    }
+
     window.onscroll = function () { scrollFunction() };
 
     mybutton = document.getElementById("scrollBtn");
     function scrollFunction() {
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
             mybutton.style.display = "block";
         } else {
             mybutton.style.display = "none";
         }
     }
-
 
 });

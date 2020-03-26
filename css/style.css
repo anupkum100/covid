@@ -62,6 +62,14 @@ small {
   animation: spin 1s linear infinite;
 }
 
+.api_error{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  margin: -50px 0 0 -100px;
+}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -87,7 +95,7 @@ small {
     min-height: calc(50ch);
   }
   .gotop {
-    display: block !important;
+    display: none;
     background: rgb(122, 122, 122, 0.6);
     position: fixed;
     bottom: 100px;
@@ -133,10 +141,6 @@ footer {
 
 #myIframe {
   min-height: calc(90ch);
-}
-
-.gotop {
-  display: none;
 }
 
 .news-container {

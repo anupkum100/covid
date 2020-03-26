@@ -204,7 +204,12 @@
     <!-- End of Content Wrapper -->
 
     <div ng-if="isApiCallInProgress" class="loaderContainer">
-      <div class="loader"></div>
+      <div ng-if="!isApiFailed" class="loader"></div>
+      <div ng-if="isApiFailed" class="api_error text-center text-light">
+        <p>Unable to load Information</p>
+        <button class="btn btn-success" ng-click="showOnlyNews(true)">Read News</button>
+        <button class="btn btn-primary" ng-click="refreshPage()">Refresh</button>
+      </div>
     </div>
 
     <div class="gotop" id="scrollBtn" ng-click="scrollTop()">^</div>

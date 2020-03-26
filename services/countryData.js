@@ -9,6 +9,13 @@ app.controller('myCtrl', function ($scope, $http) {
     $scope.showFacts = false;
     $scope.showMyths = false;
 
+    $scope.worldData = {
+        cases: 0,
+        deaths: 0,
+        recovered: 0,
+        new: 0,
+    }
+
     $scope.category = [{
         label: 'Total Cases',
         value: 0,
@@ -31,32 +38,6 @@ app.controller('myCtrl', function ($scope, $http) {
 
     getData("https://corona.lmao.ninja/countries");
 
-
-    // todo : find new api for world data
-    $http({
-        method: "GET",
-        url: "https://coronavirus-monitor.p.rapidapi.com/coronavirus/worldstat.php",
-        headers: {
-            "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
-            "x-rapidapi-key": "1c6e772606msh3c10d4d01ae157bp1dee68jsne1d22692e58a"
-        }
-    }).then(function mySuccess(response) {
-        $scope.worldData = response.data;
-        // if ($scope.headerText === 'World') {
-        //     $scope.category[0].value = parseInt(response.data.total_cases.replace(',', ''));
-        //     $scope.category[1].value = parseInt(response.data.total_deaths.replace(',', ''));
-        //     $scope.category[2].value = parseInt(response.data.total_recovered.replace(',', ''));
-        //     $scope.category[3].value = parseInt(response.data.new_cases.replace(',', ''));
-
-        //     $scope.category[1].percentage = getPercentage(response.data.total_deaths, response.data.total_cases);
-        //     $scope.category[2].percentage = getPercentage(response.data.total_recovered, response.data.total_cases);
-        //     $scope.category[3].percentage = getPercentage(response.data.new_cases, response.data.total_cases);
-
-        // }
-    }, function myError(response) {
-        $scope.worldData = {};
-    });
-
     function getPercentage(category, total) {
         let number = 100 * category / total
         return number.toFixed(2)
@@ -64,20 +45,20 @@ app.controller('myCtrl', function ($scope, $http) {
 
     $scope.showCountryList = () => {
         $scope.isCountrySelected = !$scope.isCountrySelected;
-        $scope.showMyths = false;
+        // $scope.showMyths = false;
     }
 
     $scope.changeArea = (countryData) => {
         $scope.headerText = countryData.country;
+        $scope.showMyths = false;
         $scope.showCountryList();
         if (countryData === 'World') {
             $scope.headerText = countryData;
-            $scope.category[0].value = parseInt($scope.worldData.total_cases.replace(',', ''));
-            $scope.category[1].value = parseInt($scope.worldData.total_deaths.replace(',', ''));
-            $scope.category[2].value = parseInt($scope.worldData.total_recovered.replace(',', ''));
-            $scope.category[3].value = parseInt($scope.worldData.new_cases.replace(',', ''));
+            $scope.category[0].value = $scope.worldData.cases;
+            $scope.category[1].value = $scope.worldData.deaths;
+            $scope.category[2].value = $scope.worldData.recovered;
+            $scope.category[3].value = $scope.worldData.new;
 
-            debugger
             $scope.category[1].percentage = getPercentage($scope.category[1].value, $scope.category[0].value);
             $scope.category[2].percentage = getPercentage($scope.category[2].value, $scope.category[0].value);
             $scope.category[3].percentage = getPercentage($scope.category[3].value, $scope.category[0].value);
@@ -93,6 +74,9 @@ app.controller('myCtrl', function ($scope, $http) {
             url: "https://ameerthehacker.github.io/corona-india-status/covid19-indian-states.json"
         }).then(function mySuccess(response) {
             $scope.indainStateData = Object.keys(response.data.data).map((stateData) => {
+                if (!stateData.match('#') === null) {
+                    return
+                }
                 return {
                     key: stateData,
                     value: response.data.data[stateData]
@@ -278,6 +262,12 @@ app.controller('myCtrl', function ($scope, $http) {
                 if (countryData.country === 'India') {
                     $scope.indiaData = countryData
                     $scope.changeArea($scope.indiaData);
+                }
+                $scope.worldData = {
+                    cases: $scope.worldData.cases + countryData.cases,
+                    deaths: $scope.worldData.deaths + countryData.deaths,
+                    recovered: $scope.worldData.recovered + countryData.recovered,
+                    new: $scope.worldData.new + countryData.todayCases,
                 }
             })
         }, function myError(response) {

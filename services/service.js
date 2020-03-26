@@ -216,14 +216,6 @@ simplemaps_countrymap_mapdata = {
             description: "0"
         }
     },
-    // locations: {
-    //     "0": {
-    //         lat: 18.987807,
-    //         lng: 72.836447,
-    //         name: "Mumbai",
-    //         state_description: "Mumbai"
-    //     }
-    // },
     labels: {},
     regions: {}
 };

@@ -76,12 +76,12 @@ app.controller('myCtrl', function ($scope, $http) {
             $scope.indainStateData = Object.keys(response.data.data).map((stateData) => {
                 if (!stateData.match('#') === null) {
                     return
+                } else {
+                    return {
+                        key: stateData,
+                        value: response.data.data[stateData]
+                    }
                 }
-                return {
-                    key: stateData,
-                    value: response.data.data[stateData]
-                }
-
             });
         }, function myError(response) {
             $scope.myWelcome = response.statusText;

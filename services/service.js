@@ -220,7 +220,205 @@ simplemaps_countrymap_mapdata = {
     regions: {}
 };
 
+dummyCountryData = {
+    "data": {
+        "Andhra Pradesh": {
+            "totalIndianCases": 12,
+            "totalForeignCases": 0,
+            "totalRecovered": 1,
+            "totalDeaths": 0,
+            "newCasesToday": 1
+        },
+        "Bihar": {
+            "totalIndianCases": 6,
+            "totalForeignCases": 0,
+            "totalRecovered": 0,
+            "totalDeaths": 1,
+            "newCasesToday": 0
+        },
+        "Chandigarh": {
+            "totalIndianCases": 7,
+            "totalForeignCases": 0,
+            "totalRecovered": 0,
+            "totalDeaths": 0,
+            "newCasesToday": 0
+        },
+        "Chhattisgarh": {
+            "totalIndianCases": 6,
+            "totalForeignCases": 0,
+            "totalRecovered": 0,
+            "totalDeaths": 0,
+            "newCasesToday": 0
+        },
+        "Delhi": {
+            "totalIndianCases": 35,
+            "totalForeignCases": 1,
+            "totalRecovered": 6,
+            "totalDeaths": 1,
+            "newCasesToday": 0
+        },
+        "Goa": {
+            "totalIndianCases": 3,
+            "totalForeignCases": 0,
+            "totalRecovered": 0,
+            "totalDeaths": 0,
+            "newCasesToday": 0
+        },
+        "Gujarat": {
+            "totalIndianCases": 42,
+            "totalForeignCases": 1,
+            "totalRecovered": 0,
+            "totalDeaths": 3,
+            "newCasesToday": 0
+        },
+        "Haryana": {
+            "totalIndianCases": 16,
+            "totalForeignCases": 14,
+            "totalRecovered": 11,
+            "totalDeaths": 0,
+            "newCasesToday": 0
+        },
+        "Himachal Pradesh": {
+            "totalIndianCases": 3,
+            "totalForeignCases": 0,
+            "totalRecovered": 0,
+            "totalDeaths": 1,
+            "newCasesToday": 0
+        },
+        "Jammu and Kashmir": {
+            "totalIndianCases": 13,
+            "totalForeignCases": 0,
+            "totalRecovered": 1,
+            "totalDeaths": 1,
+            "newCasesToday": 0
+        },
+        "Karnataka": {
+            "totalIndianCases": 55,
+            "totalForeignCases": 0,
+            "totalRecovered": 3,
+            "totalDeaths": 2,
+            "newCasesToday": 0
+        },
+        "Kerala": {
+            "totalIndianCases": 129,
+            "totalForeignCases": 8,
+            "totalRecovered": 11,
+            "totalDeaths": 0,
+            "newCasesToday": 19
+        },
+        "Ladakh": {
+            "totalIndianCases": 13,
+            "totalForeignCases": 0,
+            "totalRecovered": 3,
+            "totalDeaths": 0,
+            "newCasesToday": 0
+        },
+        "Madhya Pradesh": {
+            "totalIndianCases": 20,
+            "totalForeignCases": 0,
+            "totalRecovered": 0,
+            "totalDeaths": 1,
+            "newCasesToday": 0
+        },
+        "Maharashtra": {
+            "totalIndianCases": 127,
+            "totalForeignCases": 3,
+            "totalRecovered": 15,
+            "totalDeaths": 4,
+            "newCasesToday": 6
+        },
+        "Manipur": {
+            "totalIndianCases": 1,
+            "totalForeignCases": 0,
+            "totalRecovered": 0,
+            "totalDeaths": 0,
+            "newCasesToday": 0
+        },
+        "Mizoram": {
+            "totalIndianCases": 1,
+            "totalForeignCases": 0,
+            "totalRecovered": 0,
+            "totalDeaths": 0,
+            "newCasesToday": 0
+        },
+        "Odisha": {
+            "totalIndianCases": 2,
+            "totalForeignCases": 0,
+            "totalRecovered": 0,
+            "totalDeaths": 0,
+            "newCasesToday": 0
+        },
+        "Puducherry": {
+            "totalIndianCases": 1,
+            "totalForeignCases": 0,
+            "totalRecovered": 0,
+            "totalDeaths": 0,
+            "newCasesToday": 0
+        },
+        "Punjab": {
+            "totalIndianCases": 33,
+            "totalForeignCases": 0,
+            "totalRecovered": 0,
+            "totalDeaths": 1,
+            "newCasesToday": 0
+        },
+        "Rajasthan": {
+            "totalIndianCases": 39,
+            "totalForeignCases": 2,
+            "totalRecovered": 3,
+            "totalDeaths": 0,
+            "newCasesToday": 0
+        },
+        "Tamil Nadu": {
+            "totalIndianCases": 23,
+            "totalForeignCases": 6,
+            "totalRecovered": 1,
+            "totalDeaths": 1,
+            "newCasesToday": 3
+        },
+        "Telengana": {
+            "totalIndianCases": 35,
+            "totalForeignCases": 10,
+            "totalRecovered": 1,
+            "totalDeaths": 0,
+            "newCasesToday": 1
+        },
+        "Uttarakhand": {
+            "totalIndianCases": 4,
+            "totalForeignCases": 1,
+            "totalRecovered": 0,
+            "totalDeaths": 0,
+            "newCasesToday": 0
+        },
+        "Uttar Pradesh": {
+            "totalIndianCases": 40,
+            "totalForeignCases": 1,
+            "totalRecovered": 11,
+            "totalDeaths": 0,
+            "newCasesToday": 0
+        },
+        "West Bengal": {
+            "totalIndianCases": 10,
+            "totalForeignCases": 0,
+            "totalRecovered": 0,
+            "totalDeaths": 1,
+            "newCasesToday": 0
+        },
+        "677#": {
+            "totalIndianCases": 47,
+            "totalForeignCases": 67,
+            "totalRecovered": 17,
+            "totalDeaths": null,
+            "newCasesToday": 0
+        }
+    },
+    "lastUpdated": "Fri Mar 27 2020 10:04:20 GMT+0000 (Coordinated Universal Time)"
+}
+
 $.get("https://ameerthehacker.github.io/corona-india-status/covid19-indian-states.json", (response) => {
+    if (Object.keys(response.data).length === 0) {
+        response = dummyCountryData;
+    }
     Object.keys(simplemaps_countrymap_mapdata.state_specific).forEach((stateData, index) => {
         if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name]) {
             simplemaps_countrymap_mapdata.state_specific[stateData].description = 'Total:' + response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases + '</br>' +

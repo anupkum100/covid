@@ -1,6 +1,6 @@
 // ALl country data : https://pomber.github.io/covid19/timeseries.json
 var app = angular.module('myApp', []);
-app.controller('myCtrl', function ($scope, $http) {
+app.controller('myCtrl', function($scope, $http) {
     $scope.headerText = "World";
     $scope.indiaData = {};
     $scope.indainStateData = {};
@@ -78,6 +78,9 @@ app.controller('myCtrl', function ($scope, $http) {
             url: "https://ameerthehacker.github.io/corona-india-status/covid19-indian-states.json"
         }).then(function mySuccess(response) {
 
+            if (Object.keys(response.data.data).length === 0) {
+                response.data = dummyCountryData;
+            }
             $scope.indainStateData = [];
             Object.keys(response.data.data).forEach((stateData) => {
                 if (stateData.match('#') !== null) {
@@ -126,50 +129,50 @@ app.controller('myCtrl', function ($scope, $http) {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: "Infected",
-                    lineTension: 0.7,
-                    backgroundColor: "rgba(78, 115, 223, 0.05)",
-                    borderColor: "rgba(78, 115, 223, 1)",
-                    pointRadius: 2,
-                    pointBackgroundColor: "rgba(78, 115, 223, 1)",
-                    pointBorderColor: "rgba(78, 115, 223, 1)",
-                    pointHoverRadius: 2,
-                    pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-                    pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-                    pointHitRadius: 2,
-                    pointBorderWidth: 1,
-                    data
-                },
-                {
-                    label: "Deaths",
-                    lineTension: 0.7,
-                    backgroundColor: "rgba(78, 115, 223, 0.05)",
-                    borderColor: "#e74a3b",
-                    pointRadius: 2,
-                    pointBackgroundColor: "#e74a3b",
-                    pointBorderColor: "#e74a3b",
-                    pointHoverRadius: 2,
-                    pointHoverBackgroundColor: "#e74a3b",
-                    pointHoverBorderColor: "#e74a3b",
-                    pointHitRadius: 10,
-                    pointBorderWidth: 2,
-                    data: deaths
-                },
-                {
-                    label: "Recovered",
-                    lineTension: 0.7,
-                    backgroundColor: "rgba(78, 115, 223, 0.05)",
-                    borderColor: "#1cc88a",
-                    pointRadius: 2,
-                    pointBackgroundColor: "#1cc88a",
-                    pointBorderColor: "#1cc88a",
-                    pointHoverRadius: 2,
-                    pointHoverBackgroundColor: "#1cc88a",
-                    pointHoverBorderColor: "#1cc88a",
-                    pointHitRadius: 10,
-                    pointBorderWidth: 2,
-                    data: recovered
-                }
+                        label: "Infected",
+                        lineTension: 0.7,
+                        backgroundColor: "rgba(78, 115, 223, 0.05)",
+                        borderColor: "rgba(78, 115, 223, 1)",
+                        pointRadius: 2,
+                        pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHoverRadius: 2,
+                        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                        pointHitRadius: 2,
+                        pointBorderWidth: 1,
+                        data
+                    },
+                    {
+                        label: "Deaths",
+                        lineTension: 0.7,
+                        backgroundColor: "rgba(78, 115, 223, 0.05)",
+                        borderColor: "#e74a3b",
+                        pointRadius: 2,
+                        pointBackgroundColor: "#e74a3b",
+                        pointBorderColor: "#e74a3b",
+                        pointHoverRadius: 2,
+                        pointHoverBackgroundColor: "#e74a3b",
+                        pointHoverBorderColor: "#e74a3b",
+                        pointHitRadius: 10,
+                        pointBorderWidth: 2,
+                        data: deaths
+                    },
+                    {
+                        label: "Recovered",
+                        lineTension: 0.7,
+                        backgroundColor: "rgba(78, 115, 223, 0.05)",
+                        borderColor: "#1cc88a",
+                        pointRadius: 2,
+                        pointBackgroundColor: "#1cc88a",
+                        pointBorderColor: "#1cc88a",
+                        pointHoverRadius: 2,
+                        pointHoverBackgroundColor: "#1cc88a",
+                        pointHoverBorderColor: "#1cc88a",
+                        pointHitRadius: 10,
+                        pointBorderWidth: 2,
+                        data: recovered
+                    }
                 ],
             },
             options: {
@@ -187,7 +190,7 @@ app.controller('myCtrl', function ($scope, $http) {
                     yAxes: [{
                         ticks: {
                             maxTicksLimit: 20,
-                            callback: function (value, index, values) {
+                            callback: function(value, index, values) {
                                 return value;
                             }
                         }
@@ -211,7 +214,7 @@ app.controller('myCtrl', function ($scope, $http) {
                     mode: 'index',
                     caretPadding: 10,
                     callbacks: {
-                        label: function (tooltipItem, chart) {
+                        label: function(tooltipItem, chart) {
                             var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
                             return datasetLabel + ': ' + tooltipItem.yLabel
                         }
@@ -329,9 +332,10 @@ app.controller('myCtrl', function ($scope, $http) {
         window.location.reload();
     }
 
-    window.onscroll = function () { scrollFunction() };
+    window.onscroll = function() { scrollFunction() };
 
     mybutton = document.getElementById("scrollBtn");
+
     function scrollFunction() {
         if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
             mybutton.style.display = "block";

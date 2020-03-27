@@ -1,9 +1,9 @@
 // ALl country data : https://pomber.github.io/covid19/timeseries.json
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope, $http) {
-    $scope.headerText = "World";
+    $scope.headerText = "India";
     $scope.indiaData = {};
-    $scope.indainStateData = {};
+    $scope.indainStateData = [];
     $scope.isCountrySelected = false;
     $scope.isApiCallInProgress = false;
     $scope.isApiFailed = false;
@@ -75,26 +75,77 @@ app.controller('myCtrl', function($scope, $http) {
     function getIndianStateData() {
         $http({
             method: "GET",
-            url: "https://ameerthehacker.github.io/corona-india-status/covid19-indian-states.json"
+            url: "https://v1.api.covindia.com/district-values"
         }).then(function mySuccess(response) {
+            let updatedObject = updateResponseObject(response.data);
 
-            if (Object.keys(response.data.data).length === 0) {
-                response.data = dummyCountryData;
-            }
             $scope.indainStateData = [];
-            Object.keys(response.data.data).forEach((stateData) => {
-                if (stateData.match('#') !== null) {
-                    return
-                }
+            Object.keys(updatedObject).forEach((stateData) => {
                 $scope.indainStateData.push({
                     key: stateData,
-                    value: response.data.data[stateData]
+                    value: updatedObject[stateData]
                 })
-
             });
+
+            assignMapData(updatedObject);
+
         }, function myError(response) {
             $scope.myWelcome = response.statusText;
         });
+    }
+
+    function assignMapData(responseData) {
+        Object.keys(simplemaps_countrymap_mapdata.state_specific).forEach((stateObj) => {
+            let stateName = simplemaps_countrymap_mapdata.state_specific[stateObj].name;
+            if (responseData[stateName]) {
+                simplemaps_countrymap_mapdata.state_specific[stateObj].description = 'Total:' + responseData[stateName].cases + '</br>' +
+                    '<span class="text-danger">Deaths:' + responseData[stateName].deaths + '</span></br>';
+
+                if (responseData[stateName].cases > 0) {
+                    simplemaps_countrymap_mapdata.state_specific[stateObj].color = '#FFD0C2';
+                }
+                if (responseData[stateName].cases > 5) {
+                    simplemaps_countrymap_mapdata.state_specific[stateObj].color = '#FF8A83';
+                }
+                if (responseData[stateName].cases > 20) {
+                    simplemaps_countrymap_mapdata.state_specific[stateObj].color = '#D65F59';
+                }
+                if (responseData[stateName].cases > 50) {
+                    simplemaps_countrymap_mapdata.state_specific[stateObj].color = '#C23210';
+                }
+                if (responseData[stateName].cases > 100) {
+                    simplemaps_countrymap_mapdata.state_specific[stateObj].color = '#991101';
+                }
+            }
+        });
+        simplemaps_countrymap.load();
+    }
+
+    function updateResponseObject(response) {
+        let updatedObject = {};
+        Object.keys(response).forEach((city) => {
+            if (updatedObject[response[city].state] === undefined) {
+                updatedObject[response[city].state] = {
+                    cases: response[city].infected,
+                    deaths: response[city].dead,
+                    city: [{
+                        name: city,
+                        cases: response[city].infected,
+                        deaths: response[city].dead
+                    }]
+                }
+            } else {
+                updatedObject[response[city].state].cases = updatedObject[response[city].state].cases + response[city].infected,
+                    updatedObject[response[city].state].deaths = updatedObject[response[city].state].deaths + response[city].dead,
+                    updatedObject[response[city].state].city.push({
+                        name: city,
+                        cases: response[city].infected,
+                        deaths: response[city].dead
+                    })
+            }
+        })
+
+        return updatedObject;
     }
 
     function updateAllData(countryData) {
@@ -269,7 +320,7 @@ app.controller('myCtrl', function($scope, $http) {
             $scope.countryWise = response.data;
             response.data.forEach(countryData => {
                 if (countryData.country === 'India') {
-                    $scope.indiaData = countryData
+                    $scope.indiaData = countryData;
                     $scope.changeArea($scope.indiaData);
                 }
                 $scope.worldData = {
@@ -342,6 +393,14 @@ app.controller('myCtrl', function($scope, $http) {
         } else {
             mybutton.style.display = "none";
         }
+    }
+
+    $scope.openModal = (modalData) => {
+        $scope.selectedStateData = modalData;
+    }
+
+    $scope.closeModal = () => {
+        $scope.selectedStateData = undefined;
     }
 
 });

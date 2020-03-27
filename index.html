@@ -148,11 +148,11 @@
                                     data and statewise
                                     data might vary.</small>
                                 <table class="w-100">
-                                    <tr class="text-center" ng-init="orderby='-value.totalIndianCases'">
-                                        <th class="w-50 border"> State</th>
-                                        <th class="w-25 border" ng-click="orderby === 'value.totalIndianCases' ? (orderby='-value.totalIndianCases') : (orderby='value.totalIndianCases')">
+                                    <tr class="text-center" ng-init="orderby='-value.cases'">
+                                        <th class="w-50 border"> State (Cities)</th>
+                                        <th class="w-25 border" ng-click="orderby === 'value.cases' ? (orderby='-value.cases') : (orderby='value.cases')">
                                             Cases</th>
-                                        <th class="w-25 border" ng-click="orderby === 'value.totalDeaths' ? (orderby='-value.totalDeaths') : (orderby='value.totalDeaths')">
+                                        <th class="w-25 border" ng-click="orderby === 'value.deaths' ? (orderby='-value.deaths') : (orderby='value.deaths')">
                                             Deaths</th>
                                     </tr>
                                     <tr ng-if="indainStateData.length === 0">
@@ -160,10 +160,16 @@
                                                 sometime...</small></td>
                                     </tr>
                                     <tr class="text-center labelText" ng-repeat="stateData in indainStateData | orderBy: orderby">
-                                        <td class="w-50 border"> <span class="">{{stateData.key}} </span></td>
-                                        <td class="w-25 border"><span class="text-dark">{{stateData.value.totalIndianCases}}</span>
+                                        <td class="w-50 border">
+                                            <a class="text-primary" ng-click="openModal(stateData)">{{stateData.key}}
+                                                <span class="text-info">
+                                                    ({{stateData.value.city.length}})
+                                                </span>
+                                            </a>
                                         </td>
-                                        <td class="w-25 border"> <span class="text-danger">{{stateData.value.totalDeaths}}</span></td>
+                                        <td class="w-25 border"><span class="text-dark">{{stateData.value.cases}}</span>
+                                        </td>
+                                        <td class="w-25 border"> <span class="text-danger">{{stateData.value.deaths}}</span></td>
                                     </tr>
                                 </table>
                             </div>
@@ -226,6 +232,25 @@
         </div>
 
         <div class="gotop" id="scrollBtn" ng-click="scrollTop()">^</div>
+
+        <div ng-if="selectedStateData" class="loaderContainer">
+            <span ng-click="closeModal()" class="closeIcon">X</span>
+            <table class="modal-table">
+                <tr class="text-center" ng-init="orderby='-cases'">
+                    <th class="w-50 border"> City</th>
+                    <th class="w-25 border" ng-click="orderby === 'cases' ? (orderby='-cases') : (orderby='cases')">
+                        Cases</th>
+                    <th class="w-25 border" ng-click="orderby === 'deaths' ? (orderby='-deaths') : (orderby='deaths')">
+                        Deaths</th>
+                </tr>
+                <tr class="text-center text-black" ng-repeat="cityData in selectedStateData.value.city | orderBy: orderby">
+                    <td class="w-50 border"><a class="" ng-click="openModal(stateData)">{{cityData.name}} </a></td>
+                    <td class="w-25 border"><span class="">{{cityData.cases}}</span>
+                    </td>
+                    <td class="w-25 border"> <span class="">{{cityData.deaths}}</span></td>
+                </tr>
+            </table>
+        </div>
 
         <!-- Footer -->
         <footer class="sticky-footer bg-white text-center p-0">

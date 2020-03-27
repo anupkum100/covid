@@ -164,3 +164,26 @@ footer {
 #world-iframe .InfographicEditor-Contents-Item {
     display: none;
 }
+
+.modal-table {
+    width: 90%;
+    margin: 25px auto;
+    font-size: 12px;
+    background: rgb(200, 200, 200);
+    color: black;
+}
+
+.closeIcon {
+    position: fixed;
+    right: 5px;
+    background: #ff3333;
+    color: white;
+    height: 30px;
+    width: 30px;
+    border-radius: 30px;
+    display: block;
+    text-align: center;
+    line-height: 30px;
+    top: 10px;
+    cursor: pointer;
+}

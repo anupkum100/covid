@@ -233,7 +233,7 @@
 
         <div class="gotop" id="scrollBtn" ng-click="scrollTop()">^</div>
 
-        <div ng-if="selectedStateData" class="loaderContainer">
+        <div ng-if="selectedStateData" ng-class="selectedStateData ? 'd-block' : ''" class="loaderContainer d-none">
             <span ng-click="closeModal()" class="closeIcon">X</span>
             <table class="modal-table">
                 <tr class="text-center" ng-init="orderby='-cases'">

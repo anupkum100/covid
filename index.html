@@ -26,7 +26,7 @@
     <div id="wrapper" ng-app="myApp" ng-controller="myCtrl">
 
         <!-- Sidebar -->
-        <ul ng-if="!isCountrySelected" class="d-none navbar-nav sidebar-dark accordion mb-2" ng-class="isCountrySelected ? 'w-0 d-none' : 'd-block'" id="accordionSidebar">
+        <ul ng-if="!isCountrySelected" class="d-none navbar-nav sidebar-dark accordion mb-5" ng-class="isCountrySelected ? 'w-0 d-none' : 'd-block'" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
 
@@ -74,7 +74,7 @@
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
-        <div id="" class="d-lg-block w-100" ng-class="isCountrySelected ? '' : 'w-0 d-none'">
+        <div id="" class="d-lg-block w-100 mb-5" ng-class="isCountrySelected ? '' : 'w-0 d-none'">
 
             <!-- Main Content -->
             <div id="content">
@@ -159,9 +159,9 @@
                                         <td><small class="text-danger">Updating India data. Please try after
                                                 sometime...</small></td>
                                     </tr>
-                                    <tr class="text-center labelText" ng-repeat="stateData in indainStateData | orderBy: orderby">
+                                    <tr class="text-center labelText" ng-click="openModal(stateData)" ng-repeat="stateData in indainStateData | orderBy: orderby">
                                         <td class="w-50 border">
-                                            <a class="text-primary" ng-click="openModal(stateData)">{{stateData.key}}
+                                            <a class="text-primary">{{stateData.key}}
                                                 <span class="text-info">
                                                     ({{stateData.value.city.length}})
                                                 </span>
@@ -244,7 +244,7 @@
                         Deaths</th>
                 </tr>
                 <tr class="text-center text-black" ng-repeat="cityData in selectedStateData.value.city | orderBy: orderby">
-                    <td class="w-50 border"><a class="" ng-click="openModal(stateData)">{{cityData.name}} </a></td>
+                    <td class="w-50 border"><a class="">{{cityData.name}} </a></td>
                     <td class="w-25 border"><span class="">{{cityData.cases}}</span>
                     </td>
                     <td class="w-25 border"> <span class="">{{cityData.deaths}}</span></td>
@@ -254,11 +254,14 @@
 
         <!-- Footer -->
         <footer class="sticky-footer bg-white text-center p-0">
-            <!-- Start of WebFreeCounter Code -->
-            Visitors:
-            <img src="https://www.webfreecounter.com/hit.php?id=gumkokac&nd=6&style=15" border="0" alt="visitor counter">
-            <!-- End of WebFreeCounter Code -->
-            <span>Copyright &copy; Anup Kumar</span>
+            <small>Data source: <b>corona.lmao.ninja , covindia.com , coronavirus-monitor , mohfw.gov.in</b></br>
+                <!-- Start of WebFreeCounter Code -->
+                Visitors:
+                <img src="https://www.webfreecounter.com/hit.php?id=gumkokac&nd=6&style=15" border="0"
+                    alt="visitor counter">
+                <!-- End of WebFreeCounter Code -->
+                <span>Copyright &copy; Anup Kumar</span>
+            </small>
         </footer>
         <!-- End of Footer -->
 

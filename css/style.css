@@ -187,3 +187,7 @@ footer {
     top: 10px;
     cursor: pointer;
 }
+
+.mb-5 {
+    margin-bottom: 80px !important;
+}

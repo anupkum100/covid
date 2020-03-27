@@ -45,9 +45,10 @@
             <!-- Nav Item - Dashboard -->
 
             <label class="position-relative w-100">
-        <input class="labelText w-100" placeholder="Search..." ng-model="searchText">
-        <span ng-if="searchText.length > 0" class="position-absolute clearBtn" ng-click="clearText()">Clear</span>
-      </label>
+                <input class="labelText w-100" placeholder="Search..." ng-model="searchText">
+                <span ng-if="searchText.length > 0" class="position-absolute clearBtn"
+                    ng-click="clearText()">Clear</span>
+            </label>
 
             <li class="nav-item active">
                 <a class="p-0 labelText">
@@ -60,8 +61,8 @@
                         </tr>
                         <tr class="text-center" ng-repeat="countryData in countryWise | filter:searchText | orderBy: orderby" ng-click="changeArea(countryData)">
                             <td class="w-50 border"> <span class="">
-                  <img class="flag" ng-src="{{countryData.countryInfo.flag}}">{{countryData.country}}
-                </span></td>
+                                    <img class="flag" ng-src="{{countryData.countryInfo.flag}}">{{countryData.country}}
+                                </span></td>
                             <td class="w-25 border"><span class="text-dark">{{countryData.cases}}</span></td>
                             <td class="w-25 border"> <span class="text-danger">{{countryData.deaths}}</span></td>
                         </tr>
@@ -115,11 +116,13 @@
                                             <div class="col mr-2 text-center">
                                                 <div ng-class='"text-" + data.class' class="text-xs font-weight-bold text-uppercase mb-1">
                                                     {{data.label}}</div>
-                                                <div class="h3 mb-0 font-weight-bold" ng-class='"text-" + data.class'>{{data.value}}</div>
+                                                <div class="h3 mb-0 font-weight-bold" ng-class='"text-" + data.class'>
+                                                    {{data.value}}</div>
 
                                                 <div ng-if="data.percentage" class="row no-gutters align-items-center">
                                                     <div class="col-auto">
-                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{data.percentage}}%</div>
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                                                            {{data.percentage}}%</div>
                                                     </div>
                                                     <div class="col">
                                                         <div class="progress progress-sm mr-2">
@@ -141,7 +144,9 @@
 
                         <div class="row">
                             <div ng-if="headerText === 'India'" class="col-lg-4">
-                                <small class="text-danger">Note: Country overall data and statewise data might vary.</small>
+                                <small class="text-danger" ng-if="indainStateData.length !== 0">Note: Country overall
+                                    data and statewise
+                                    data might vary.</small>
                                 <table class="w-100">
                                     <tr class="text-center" ng-init="orderby='-value.totalIndianCases'">
                                         <th class="w-50 border"> State</th>
@@ -149,6 +154,10 @@
                                             Cases</th>
                                         <th class="w-25 border" ng-click="orderby === 'value.totalDeaths' ? (orderby='-value.totalDeaths') : (orderby='value.totalDeaths')">
                                             Deaths</th>
+                                    </tr>
+                                    <tr ng-if="indainStateData.length === 0">
+                                        <td><small class="text-danger">Updating India data. Please try after
+                                                sometime...</small></td>
                                     </tr>
                                     <tr class="text-center labelText" ng-repeat="stateData in indainStateData | orderBy: orderby">
                                         <td class="w-50 border"> <span class="">{{stateData.key}} </span></td>
@@ -161,8 +170,10 @@
                             <!-- India Map -->
                             <div ng-show="headerText === 'India'" class="col-lg-4">
                                 <div class="map-legend">
-                                    <div><span style="background-color: #88A4BC;"></span><small class="ml-1">0</small></div>
-                                    <div><span style="background-color: #FFD0C2;"></span><small class="ml-1">0-5</small></div>
+                                    <div><span style="background-color: #88A4BC;"></span><small class="ml-1">0</small>
+                                    </div>
+                                    <div><span style="background-color: #FFD0C2;"></span><small class="ml-1">0-5</small>
+                                    </div>
                                     <div><span style="background-color: #FF8A83;"></span><small class="ml-1">5-20</small></div>
                                     <div><span style="background-color: #D65F59;"></span><small class="ml-1">20-50</small></div>
                                     <div><span style="background-color: #C23210;"></span><small class="ml-1">50-100</small></div>
@@ -177,11 +188,11 @@
                                     <!-- Card Header - Dropdown -->
                                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                         <small class="m-0 text-info">
-                      {{headerText}} :
-                      <span class="text-primary">Cases</span> |
-                      <span class="text-danger">Deaths</span> |
-                      <span class="text-success">Recovered</span>
-                    </small>
+                                            {{headerText}} :
+                                            <span class="text-primary">Cases</span> |
+                                            <span class="text-danger">Deaths</span> |
+                                            <span class="text-success">Recovered</span>
+                                        </small>
                                     </div>
                                     <!-- Card Body -->
                                     <div class="card-body">

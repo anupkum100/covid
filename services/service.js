@@ -241,8 +241,11 @@ $.get("https://ameerthehacker.github.io/corona-india-status/covid19-indian-state
             if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases > 100) {
                 simplemaps_countrymap_mapdata.state_specific[stateData].color = '#991101';
             }
-            
+
         }
     })
+    if (window.innerWidth > 700) {
+        simplemaps_countrymap_mapdata.main_settings.width = "400";
+    }
     simplemaps_countrymap.load();
 })

@@ -6,10 +6,11 @@ app.controller('myCtrl', function ($scope, $http) {
     $scope.indainStateData = {};
     $scope.isCountrySelected = false;
     $scope.isApiCallInProgress = false;
-    $scope.isApiFailed - true;
+    $scope.isApiFailed = false;
     $scope.showFacts = false;
     $scope.showMyths = false;
     $scope.showNews = false;
+    $scope.countryWise = [];
 
     $scope.worldData = {
         cases: 0,
@@ -77,14 +78,15 @@ app.controller('myCtrl', function ($scope, $http) {
             url: "https://ameerthehacker.github.io/corona-india-status/covid19-indian-states.json"
         }).then(function mySuccess(response) {
 
-            $scope.indainStateData = Object.keys(response.data.data).map((stateData) => {
+            $scope.indainStateData = [];
+            Object.keys(response.data.data).forEach((stateData) => {
                 if (stateData.match('#') !== null) {
                     return
                 }
-                return {
+                $scope.indainStateData.push({
                     key: stateData,
                     value: response.data.data[stateData]
-                }
+                })
 
             });
         }, function myError(response) {

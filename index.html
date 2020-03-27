@@ -28,8 +28,8 @@
   <div id="wrapper" ng-app="myApp" ng-controller="myCtrl">
 
     <!-- Sidebar -->
-    <ul ng-if="!isCountrySelected" class="navbar-nav sidebar-dark accordion mb-2" style="width: -webkit-fill-available;"
-      ng-class="isCountrySelected ? 'w-0 d-none' : ''" id="accordionSidebar">
+    <ul ng-if="!isCountrySelected" class="d-none navbar-nav sidebar-dark accordion mb-2"
+      ng-class="isCountrySelected ? 'w-0 d-none' : 'd-block'" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
 
@@ -47,18 +47,19 @@
 
       <!-- Nav Item - Dashboard -->
 
-      <label class="position-relative">
-        <input class="w-100 labelText" placeholder="Search..." ng-model="searchText">
+      <label class="position-relative w-100">
+        <input class="labelText w-100" placeholder="Search..." ng-model="searchText">
         <span ng-if="searchText.length > 0" class="position-absolute clearBtn" ng-click="clearText()">Clear</span>
       </label>
 
       <li class="nav-item active">
         <a class="p-0 labelText">
           <table class="w-100">
-            <tr class="text-center">
-              <th class="w-50 border" ng-click="orderby='country_name'"> Country</th>
-              <th class="w-25 border" ng-click="orderby='-cases'">Cases</th>
-              <th class="w-25 border" ng-click="orderby='-deaths'"> Deaths</th>
+            <tr class="text-center" ng-init="orderby='-cases'">
+              <th class="w-50 border"> Country</th>
+              <th class="w-25 border" ng-click="orderby === 'cases' ? (orderby='-cases') : (orderby='cases')">Cases</th>
+              <th class="w-25 border" ng-click="orderby === 'deaths' ? (orderby='-deaths') : (orderby='deaths')"> Deaths
+              </th>
             </tr>
             <tr class="text-center" ng-repeat="countryData in countryWise | filter:searchText | orderBy: orderby"
               ng-click="changeArea(countryData)">
@@ -146,12 +147,16 @@
               <div ng-if="headerText === 'India'" class="col-lg-4">
                 <small class="text-danger">Note: Country overall data and statewise data might vary.</small>
                 <table class="w-100">
-                  <tr class="text-center">
+                  <tr class="text-center" ng-init="orderby='-value.totalIndianCases'">
                     <th class="w-50 border"> State</th>
-                    <th class="w-25 border" ng-click="orderby='-value.totalIndianCases'">Cases</th>
-                    <th class="w-25 border" ng-click="orderby='-value.totalDeaths'"> Deaths</th>
+                    <th class="w-25 border"
+                      ng-click="orderby === 'value.totalIndianCases' ? (orderby='-value.totalIndianCases') : (orderby='value.totalIndianCases')">
+                      Cases</th>
+                    <th class="w-25 border"
+                      ng-click="orderby === 'value.totalDeaths' ? (orderby='-value.totalDeaths') : (orderby='value.totalDeaths')">
+                      Deaths</th>
                   </tr>
-                  <tr class="text-center" ng-repeat="stateData in indainStateData | orderBy: orderby">
+                  <tr class="text-center labelText" ng-repeat="stateData in indainStateData | orderBy: orderby">
                     <td class="w-50 border"> <span class="">{{stateData.key}} </span></td>
                     <td class="w-25 border"><span class="text-dark">{{stateData.value.totalIndianCases}}</span>
                     </td>
@@ -205,7 +210,7 @@
 
     <div ng-if="isApiCallInProgress" class="loaderContainer">
       <div ng-if="!isApiFailed" class="loader"></div>
-      <div ng-if="isApiFailed" class="api_error text-center text-light">
+      <div ng-if="isApiFailed" ng-class="isApiFailed ? 'd-block' : ''" class="api_error text-center text-light d-none">
         <p>Unable to load Information</p>
         <button class="btn btn-success" ng-click="showOnlyNews(true)">Read News</button>
         <button class="btn btn-primary" ng-click="refreshPage()">Refresh</button>

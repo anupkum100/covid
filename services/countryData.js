@@ -118,6 +118,9 @@ app.controller('myCtrl', function($scope, $http) {
                 }
             }
         });
+        if (window.innerWidth < 700) {
+            simplemaps_countrymap_mapdata.main_settings.width = (window.innerWidth - 50).toString();
+        }
         simplemaps_countrymap.load();
     }
 

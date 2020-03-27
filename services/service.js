@@ -219,34 +219,3 @@ simplemaps_countrymap_mapdata = {
     labels: {},
     regions: {}
 };
-
-// $.get("https://ameerthehacker.github.io/corona-india-status/covid19-indian-states.json", (response) => {
-
-//     Object.keys(simplemaps_countrymap_mapdata.state_specific).forEach((stateData, index) => {
-//         if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name]) {
-//             simplemaps_countrymap_mapdata.state_specific[stateData].description = 'Total:' + response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases + '</br>' +
-//                 '<span class="text-danger">Deaths:' + response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalDeaths + '</span></br>' +
-//                 '<span class="text-info">Recovered:' + response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalRecovered + '</span>';
-//             if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases > 0) {
-//                 simplemaps_countrymap_mapdata.state_specific[stateData].color = '#FFD0C2';
-//             }
-//             if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases > 5) {
-//                 simplemaps_countrymap_mapdata.state_specific[stateData].color = '#FF8A83';
-//             }
-//             if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases > 20) {
-//                 simplemaps_countrymap_mapdata.state_specific[stateData].color = '#D65F59';
-//             }
-//             if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases > 50) {
-//                 simplemaps_countrymap_mapdata.state_specific[stateData].color = '#C23210';
-//             }
-//             if (response.data[simplemaps_countrymap_mapdata.state_specific[stateData].name].totalIndianCases > 100) {
-//                 simplemaps_countrymap_mapdata.state_specific[stateData].color = '#991101';
-//             }
-
-//         }
-//     })
-//     if (window.innerWidth > 700) {
-//         simplemaps_countrymap_mapdata.main_settings.width = "400";
-//     }
-//     simplemaps_countrymap.load();
-// })

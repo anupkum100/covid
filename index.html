@@ -269,7 +269,7 @@
 
         <div ng-if="selectedStateData" ng-class="selectedStateData ? 'd-block' : ''" class="loaderContainer d-none">
             <span ng-click="closeModal()" class="closeIcon">X</span>
-            <table class="modal-table">
+            <table class="modal-table mt-5">
                 <tr class="text-center" ng-init="orderby='-cases'">
                     <th class="w-50 border"> City</th>
                     <th class="w-25 border" ng-click="orderby === 'cases' ? (orderby='-cases') : (orderby='cases')">
@@ -295,7 +295,7 @@
                 <a class="text-danger" href="mailto: ncov2019@gmail.com">ncov2019@gmail.com</a>
             </small>
 
-            <table class="modal-table">
+            <table class="modal-table mt-2">
                 <tr class="text-center" ng-init="orderby='-cases'">
                     <th class="w-50 border"> State</th>
                     <th class="w-25 border">

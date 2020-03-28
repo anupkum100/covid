@@ -156,9 +156,9 @@
 
                         <div class="row">
                             <div ng-if="headerText === 'India'" class="col-lg-4">
-                                <small class="text-danger" ng-if="indainStateData.length !== 0">Note: Country overall
+                                <!-- <small class="text-danger" ng-if="indainStateData.length !== 0">Note: Country overall
                                     data and statewise
-                                    data might vary.</small>
+                                    data might vary.</small> -->
                                 <table class="w-100">
                                     <tr class="text-center" ng-init="orderby='-value.cases'">
                                         <th class="w-50 border"> State (Total Cities)</th>
@@ -219,7 +219,7 @@
                                     </div>
                                     <!-- Card Body -->
                                     <div class="card-body">
-                                        <div class="chart-area1">
+                                        <div id="chart-area">
                                             <canvas id="myAreaChart"></canvas>
                                         </div>
                                     </div>
@@ -271,6 +271,11 @@
 
         <div ng-if="showEmergencyContact" ng-class="showEmergencyContact ? 'd-block' : ''" class="loaderContainer d-none">
             <span ng-click="closeEmergencyContact()" class="closeIcon">X</span>
+            <small class="d-block text-center text-white mt-1">Helpline Number Toll free: <a class="text-danger"href="tel: 1075">1075 </a>& 
+                <a class="text-danger"href="tel: +91-11-23978046">+91-11-23978046</a></br> Helpline Email ID : <a class="text-danger"href="mailto: ncov2019@gov.in">ncov2019@gov.in </a>& 
+                <a class="text-danger"href="mailto: ncov2019@gmail.com">ncov2019@gmail.com</a>
+            </small>
+
             <table class="modal-table">
                 <tr class="text-center" ng-init="orderby='-cases'">
                     <th class="w-50 border"> State</th>
@@ -280,8 +285,9 @@
                 <tr class="text-center text-black" ng-repeat="(key,value) in emergencyContactList">
                     <td class="w-50 border"><a class="">{{key}} </a></td>
                     <td class="w-50 border"><span class="">
-                        <a ng-repeat="telephoneNumber in value.split(',')" ng-href="tel:{{telephoneNumber}}">{{telephoneNumber}}</a>
-                    </span>
+                                <a ng-repeat="telephoneNumber in value.split(',')"
+                                    ng-href="tel:{{telephoneNumber}}">{{telephoneNumber}}</a>
+                            </span>
                     </td>
                 </tr>
             </table>

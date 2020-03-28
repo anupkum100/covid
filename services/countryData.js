@@ -1,7 +1,7 @@
 // ALl country data : https://pomber.github.io/covid19/timeseries.json
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope, $http) {
-    $scope.headerText = "";
+    $scope.headerText = "India";
     $scope.indiaData = {};
     $scope.indainStateData = [];
     $scope.isCountrySelected = false;
@@ -12,6 +12,11 @@ app.controller('myCtrl', function($scope, $http) {
     $scope.showNews = false;
     $scope.showEmergencyContact = false;
     $scope.emergencyContactList = stateEmergency;
+
+    $scope.indiaTotalCases = 0;
+    $scope.indiaTotalDeaths = 0;
+
+
     $scope.newsList = [{
         urlToImage: "",
         title: "",
@@ -53,8 +58,8 @@ app.controller('myCtrl', function($scope, $http) {
         class: "info"
     }]
 
-    getIndianStateData();
-    getData("https://corona.lmao.ninja/countries");
+    getIndianStateData("https://v1.api.covindia.com/district-values");
+    let historyUrl = "https://coronavirus-monitor.p.rapidapi.com/coronavirus/cases_by_particular_country.php?country=";
 
     $scope.showCountryList = () => {
         $scope.isCountrySelected = !$scope.isCountrySelected;
@@ -81,10 +86,10 @@ app.controller('myCtrl', function($scope, $http) {
         }
     }
 
-    function getIndianStateData() {
+    function getIndianStateData(url) {
         $http({
             method: "GET",
-            url: "https://v1.api.covindia.com/district-values"
+            url
         }).then(function mySuccess(response) {
             let updatedObject = updateResponseObject(response.data);
 
@@ -97,6 +102,7 @@ app.controller('myCtrl', function($scope, $http) {
             });
 
             assignMapData(updatedObject);
+            getWorldData("https://corona.lmao.ninja/countries");
 
         }, function myError(response) {
             $scope.myWelcome = response.statusText;
@@ -136,6 +142,9 @@ app.controller('myCtrl', function($scope, $http) {
     function updateResponseObject(response) {
         let updatedObject = {};
         Object.keys(response).forEach((city) => {
+            $scope.indiaTotalCases = $scope.indiaTotalCases + response[city].infected;
+            $scope.indiaTotalDeaths = $scope.indiaTotalDeaths + response[city].dead;
+
             if (updatedObject[response[city].state] === undefined) {
                 updatedObject[response[city].state] = {
                     cases: response[city].infected,
@@ -161,10 +170,11 @@ app.controller('myCtrl', function($scope, $http) {
     }
 
     function updateAllData(countryData) {
-        $scope.selectedLocationImportantData = {
-            deaths: countryData.deaths,
-            total: countryData.cases
-        };
+        if (countryData.country === 'India') {
+            countryData.cases = $scope.indiaTotalCases;
+            countryData.deaths = $scope.indiaTotalDeaths;
+        }
+
         $scope.category[0].value = countryData.cases;
         $scope.category[1].value = countryData.deaths;
         $scope.category[2].value = countryData.recovered;
@@ -181,7 +191,7 @@ app.controller('myCtrl', function($scope, $http) {
     function getHistoryData() {
         $http({
             method: "GET",
-            url: "https://coronavirus-monitor.p.rapidapi.com/coronavirus/cases_by_particular_country.php?country=" + $scope.headerText,
+            url: historyUrl + $scope.headerText,
             headers: {
                 "x-rapidapi-host": "coronavirus-monitor.p.rapidapi.com",
                 "x-rapidapi-key": "1c6e772606msh3c10d4d01ae157bp1dee68jsne1d22692e58a"
@@ -212,7 +222,7 @@ app.controller('myCtrl', function($scope, $http) {
         }
     }
 
-    function getData(url) {
+    function getWorldData(url) {
         $scope.isApiCallInProgress = true;
         $http({
             method: "GET",
@@ -321,10 +331,15 @@ function scrollFunction() {
 
 function createAreaChart(graphData) {
 
+    $("#myAreaChart").remove();
+    $("#chart-area").append("<canvas id='myAreaChart'></canvas>");
+
     var ctx = document.getElementById("myAreaChart");
 
-    let labels = graphData.map(historyData => historyData.data.record_date.split(' ')[0]);
-    let data = graphData.map(historyData => historyData.data.total_cases.replace(',', ''));
+    let labels = new Array();
+    labels = graphData.map(historyData => historyData.data.record_date.split(' ')[0]);
+    let data = new Array();
+    data = graphData.map(historyData => historyData.data.total_cases.replace(',', ''));
     let deaths = graphData.map(historyData => historyData.data.total_deaths.replace(',', ''));
     let recovered = graphData.map(historyData => historyData.data.total_recovered.replace(',', ''));
 
@@ -380,7 +395,6 @@ function createAreaChart(graphData) {
             ],
         },
         options: {
-            maintainAspectRatio: true,
             scales: {
                 xAxes: [{
                     gridLines: {

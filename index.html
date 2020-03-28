@@ -256,7 +256,7 @@
         </div>
         <!-- End of Content Wrapper -->
 
-        <div ng-if="isApiCallInProgress" class="loaderContainer">
+        <div ng-if="isApiCallInProgress" class="loaderContainer d-none" ng-class="isApiCallInProgress ? 'd-block' : ''">
             <div ng-if="!isApiFailed" class="loader"></div>
             <div ng-if="isApiFailed" ng-class="isApiFailed ? 'd-block' : ''" class="api_error text-center text-light d-none">
                 <p>Unable to load Information</p>

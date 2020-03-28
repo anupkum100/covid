@@ -242,6 +242,7 @@ app.controller('myCtrl', function($scope, $http) {
                     new: $scope.worldData.new + countryData.todayCases,
                 }
             })
+            createBarChart($scope.countryWise, 'cases');
         }, function myError(response) {
             $scope.isApiFailed = true;
         });
@@ -305,6 +306,10 @@ app.controller('myCtrl', function($scope, $http) {
 
     $scope.closeEmergencyContact = () => {
         $scope.showEmergencyContact = false;
+    }
+
+    $scope.updateBarChart = (category) => {
+        createBarChart($scope.countryWise, category)
     }
 
 });
@@ -439,6 +444,60 @@ function createAreaChart(graphData) {
                 }
             }
         }
+    });
+}
 
+function createBarChart(worldData, category) {
+
+    $("#myBarChart").remove();
+    $("#bar-chart").append("<canvas id='myBarChart'></canvas>");
+
+    worldData.sort((a, b) => {
+        return b[category] - a[category]
+    })
+
+    let caseData = [];
+    let deathData = [];
+    let labelData = [];
+    worldData.forEach((countryData, index) => {
+        if (index < 5) {
+            caseData.push(countryData.cases);
+            deathData.push(countryData.deaths);
+            labelData.push(countryData.country)
+        }
+
+    })
+
+    let dataSet1 = {
+        label: category.substr(0, 1).toUpperCase().concat(category.substring(1)),
+        data: category === 'cases' ? caseData : deathData,
+        backgroundColor: category === 'cases' ? 'rgba(54, 162, 235, 0.2)' : 'rgba(255, 99, 132, 0.2)',
+        borderColor: category === 'cases' ? 'rgba(54, 162, 235, 1)' : 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+    }
+
+    let dataSet2 = {
+        label: category === 'cases' ? 'Deaths' : 'Cases',
+        data: category !== 'cases' ? caseData : deathData,
+        backgroundColor: category !== 'cases' ? 'rgba(54, 162, 235, 0.2)' : 'rgba(255, 99, 132, 0.2)',
+        borderColor: category !== 'cases' ? 'rgba(54, 162, 235, 1)' : 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+    }
+
+    new Chart(document.getElementById('myBarChart'), {
+        type: 'bar',
+        data: {
+            labels: labelData,
+            datasets: [dataSet1, dataSet2]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
     });
 }

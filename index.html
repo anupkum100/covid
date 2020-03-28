@@ -205,6 +205,27 @@
                                 <div id="map"></div>
                             </div>
 
+                            <div class="col-lg-6" ng-show="headerText==='World'">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3 d-flex flex-row align-items-center">
+                                        <small>Country with Most</small>
+                                        <div class="ml-3 form-check form-check-inline" ng-init="value = 'cases'">
+                                            <input ng-change='updateBarChart(value)' ng-model="value" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="cases">
+                                            <label ng-class="value === 'cases' ? 'text-primary' : ''" class="form-check-label" for="inlineRadio1">Cases</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input ng-change='updateBarChart(value)' ng-model="value" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="deaths">
+                                            <label ng-class="value === 'deaths' ? 'text-primary' : ''" class="form-check-label" for="inlineRadio2">Deaths</label>
+                                        </div>
+                                    </div>
+                                    <div class="text-center w-100">
+                                        <div id="bar-chart">
+                                            <canvas id="myBarChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Area Chart -->
                             <div class="col-lg-4" ng-if="headerText!=='World'">
                                 <div class="card shadow mb-4">
@@ -226,10 +247,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div ng-show="headerText === 'World'" class="text-center w-100">
-                        <iframe id="world-iframe" scrolling="no" frameborder="0" allowfullscreen="" src="https://e.infogram.com/8871bbdc-b9d7-45bd-a759-50f96ac3e073?parent_url=https%3A%2F%2Fwww.aljazeera.com%2Fnews%2F2020%2F03%2Fcoronavirus-pandemic-politicians-celebs-affected-200315165416470.html&amp;src=embed#async_embed"></iframe>
                     </div>
 
                 </div>
@@ -271,9 +288,11 @@
 
         <div ng-if="showEmergencyContact" ng-class="showEmergencyContact ? 'd-block' : ''" class="loaderContainer d-none">
             <span ng-click="closeEmergencyContact()" class="closeIcon">X</span>
-            <small class="d-block text-center text-white mt-1">Helpline Number Toll free: <a class="text-danger"href="tel: 1075">1075 </a>& 
-                <a class="text-danger"href="tel: +91-11-23978046">+91-11-23978046</a></br> Helpline Email ID : <a class="text-danger"href="mailto: ncov2019@gov.in">ncov2019@gov.in </a>& 
-                <a class="text-danger"href="mailto: ncov2019@gmail.com">ncov2019@gmail.com</a>
+            <small class="d-block text-center text-white mt-1">Helpline Number Toll free: <a class="text-danger"
+                    href="tel: 1075">1075 </a>&
+                <a class="text-danger" href="tel: +91-11-23978046">+91-11-23978046</a></br> Helpline Email ID : <a
+                    class="text-danger" href="mailto: ncov2019@gov.in">ncov2019@gov.in </a>&
+                <a class="text-danger" href="mailto: ncov2019@gmail.com">ncov2019@gmail.com</a>
             </small>
 
             <table class="modal-table">
@@ -285,9 +304,9 @@
                 <tr class="text-center text-black" ng-repeat="(key,value) in emergencyContactList">
                     <td class="w-50 border"><a class="">{{key}} </a></td>
                     <td class="w-50 border"><span class="">
-                                <a ng-repeat="telephoneNumber in value.split(',')"
-                                    ng-href="tel:{{telephoneNumber}}">{{telephoneNumber}}</a>
-                            </span>
+                            <a ng-repeat="telephoneNumber in value.split(',')"
+                                ng-href="tel:{{telephoneNumber}}">{{telephoneNumber}}</a>
+                        </span>
                     </td>
                 </tr>
             </table>

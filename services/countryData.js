@@ -1,7 +1,7 @@
 // ALl country data : https://pomber.github.io/covid19/timeseries.json
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope, $http) {
-    $scope.headerText = "India";
+    $scope.headerText = "";
     $scope.indiaData = {};
     $scope.indainStateData = [];
     $scope.isCountrySelected = false;
@@ -10,7 +10,23 @@ app.controller('myCtrl', function($scope, $http) {
     $scope.showFacts = false;
     $scope.showMyths = false;
     $scope.showNews = false;
-    $scope.countryWise = [];
+    $scope.showEmergencyContact = false;
+    $scope.emergencyContactList = stateEmergency;
+    $scope.newsList = [{
+        urlToImage: "",
+        title: "",
+        description: "",
+        url: "",
+        publishedAt: "",
+        source: {
+            name: ""
+        }
+    }]
+    $scope.countryWise = [{
+        country: "",
+        cases: 0,
+        deaths: 0,
+    }];
 
     $scope.worldData = {
         cases: 0,
@@ -38,17 +54,10 @@ app.controller('myCtrl', function($scope, $http) {
     }]
 
     getIndianStateData();
-
     getData("https://corona.lmao.ninja/countries");
-
-    function getPercentage(category, total) {
-        let number = 100 * category / total
-        return number.toFixed(2)
-    }
 
     $scope.showCountryList = () => {
         $scope.isCountrySelected = !$scope.isCountrySelected;
-        // $scope.showMyths = false;
     }
 
     $scope.changeArea = (countryData) => {
@@ -169,116 +178,6 @@ app.controller('myCtrl', function($scope, $http) {
         window.scrollTo(0, 0);
     }
 
-    function createAreaChart() {
-
-        var ctx = document.getElementById("myAreaChart");
-
-        let labels = $scope.graphData.map(historyData => historyData.data.record_date.split(' ')[0]);
-        let data = $scope.graphData.map(historyData => historyData.data.total_cases.replace(',', ''));
-        let deaths = $scope.graphData.map(historyData => historyData.data.total_deaths.replace(',', ''));
-        let recovered = $scope.graphData.map(historyData => historyData.data.total_recovered.replace(',', ''));
-
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                        label: "Infected",
-                        lineTension: 0.7,
-                        backgroundColor: "rgba(78, 115, 223, 0.05)",
-                        borderColor: "rgba(78, 115, 223, 1)",
-                        pointRadius: 2,
-                        pointBackgroundColor: "rgba(78, 115, 223, 1)",
-                        pointBorderColor: "rgba(78, 115, 223, 1)",
-                        pointHoverRadius: 2,
-                        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-                        pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-                        pointHitRadius: 2,
-                        pointBorderWidth: 1,
-                        data
-                    },
-                    {
-                        label: "Deaths",
-                        lineTension: 0.7,
-                        backgroundColor: "rgba(78, 115, 223, 0.05)",
-                        borderColor: "#e74a3b",
-                        pointRadius: 2,
-                        pointBackgroundColor: "#e74a3b",
-                        pointBorderColor: "#e74a3b",
-                        pointHoverRadius: 2,
-                        pointHoverBackgroundColor: "#e74a3b",
-                        pointHoverBorderColor: "#e74a3b",
-                        pointHitRadius: 10,
-                        pointBorderWidth: 2,
-                        data: deaths
-                    },
-                    {
-                        label: "Recovered",
-                        lineTension: 0.7,
-                        backgroundColor: "rgba(78, 115, 223, 0.05)",
-                        borderColor: "#1cc88a",
-                        pointRadius: 2,
-                        pointBackgroundColor: "#1cc88a",
-                        pointBorderColor: "#1cc88a",
-                        pointHoverRadius: 2,
-                        pointHoverBackgroundColor: "#1cc88a",
-                        pointHoverBorderColor: "#1cc88a",
-                        pointHitRadius: 10,
-                        pointBorderWidth: 2,
-                        data: recovered
-                    }
-                ],
-            },
-            options: {
-                maintainAspectRatio: true,
-                scales: {
-                    xAxes: [{
-                        gridLines: {
-                            display: true,
-                            drawBorder: false
-                        },
-                        ticks: {
-                            minTicksLimit: 10
-                        }
-                    }],
-                    yAxes: [{
-                        ticks: {
-                            maxTicksLimit: 20,
-                            callback: function(value, index, values) {
-                                return value;
-                            }
-                        }
-                    }],
-                },
-                legend: {
-                    display: false
-                },
-                tooltips: {
-                    backgroundColor: "rgb(255,255,255)",
-                    bodyFontColor: "#858796",
-                    titleMarginBottom: 10,
-                    titleFontColor: '#6e707e',
-                    titleFontSize: 14,
-                    borderColor: '#dddfeb',
-                    borderWidth: 1,
-                    xPadding: 15,
-                    yPadding: 15,
-                    displayColors: false,
-                    intersect: false,
-                    mode: 'index',
-                    caretPadding: 10,
-                    callbacks: {
-                        label: function(tooltipItem, chart) {
-                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                            return datasetLabel + ': ' + tooltipItem.yLabel
-                        }
-                    }
-                }
-            }
-
-        });
-    }
-
     function getHistoryData() {
         $http({
             method: "GET",
@@ -301,8 +200,8 @@ app.controller('myCtrl', function($scope, $http) {
 
                 }
             })
-            createAreaChart();
-        }, function myError(response) {
+            createAreaChart($scope.graphData);
+        }, function myError() {
             $scope.isApiFailed = true;
         });
     }
@@ -386,18 +285,6 @@ app.controller('myCtrl', function($scope, $http) {
         window.location.reload();
     }
 
-    window.onscroll = function() { scrollFunction() };
-
-    mybutton = document.getElementById("scrollBtn");
-
-    function scrollFunction() {
-        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-            mybutton.style.display = "block";
-        } else {
-            mybutton.style.display = "none";
-        }
-    }
-
     $scope.openModal = (modalData) => {
         $scope.selectedStateData = modalData;
     }
@@ -406,4 +293,138 @@ app.controller('myCtrl', function($scope, $http) {
         $scope.selectedStateData = undefined;
     }
 
+    $scope.closeEmergencyContact = () => {
+        $scope.showEmergencyContact = false;
+    }
+
 });
+
+
+// utility functions 
+function getPercentage(category, total) {
+    let number = 100 * category / total
+    return number.toFixed(2)
+}
+
+
+scrollFunction();
+
+function scrollFunction() {
+    window.onscroll = function() { scrollFunction() };
+    mybutton = document.getElementById("scrollBtn");
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        mybutton.style.display = "block";
+    } else {
+        mybutton.style.display = "none";
+    }
+}
+
+function createAreaChart(graphData) {
+
+    var ctx = document.getElementById("myAreaChart");
+
+    let labels = graphData.map(historyData => historyData.data.record_date.split(' ')[0]);
+    let data = graphData.map(historyData => historyData.data.total_cases.replace(',', ''));
+    let deaths = graphData.map(historyData => historyData.data.total_deaths.replace(',', ''));
+    let recovered = graphData.map(historyData => historyData.data.total_recovered.replace(',', ''));
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                    label: "Infected",
+                    lineTension: 0.7,
+                    backgroundColor: "rgba(78, 115, 223, 0.05)",
+                    borderColor: "rgba(78, 115, 223, 1)",
+                    pointRadius: 2,
+                    pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                    pointBorderColor: "rgba(78, 115, 223, 1)",
+                    pointHoverRadius: 2,
+                    pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                    pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                    pointHitRadius: 2,
+                    pointBorderWidth: 1,
+                    data
+                },
+                {
+                    label: "Deaths",
+                    lineTension: 0.7,
+                    backgroundColor: "rgba(78, 115, 223, 0.05)",
+                    borderColor: "#e74a3b",
+                    pointRadius: 2,
+                    pointBackgroundColor: "#e74a3b",
+                    pointBorderColor: "#e74a3b",
+                    pointHoverRadius: 2,
+                    pointHoverBackgroundColor: "#e74a3b",
+                    pointHoverBorderColor: "#e74a3b",
+                    pointHitRadius: 10,
+                    pointBorderWidth: 2,
+                    data: deaths
+                },
+                {
+                    label: "Recovered",
+                    lineTension: 0.7,
+                    backgroundColor: "rgba(78, 115, 223, 0.05)",
+                    borderColor: "#1cc88a",
+                    pointRadius: 2,
+                    pointBackgroundColor: "#1cc88a",
+                    pointBorderColor: "#1cc88a",
+                    pointHoverRadius: 2,
+                    pointHoverBackgroundColor: "#1cc88a",
+                    pointHoverBorderColor: "#1cc88a",
+                    pointHitRadius: 10,
+                    pointBorderWidth: 2,
+                    data: recovered
+                }
+            ],
+        },
+        options: {
+            maintainAspectRatio: true,
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        display: true,
+                        drawBorder: false
+                    },
+                    ticks: {
+                        minTicksLimit: 10
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        maxTicksLimit: 20,
+                        callback: function(value, index, values) {
+                            return value;
+                        }
+                    }
+                }],
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                titleMarginBottom: 10,
+                titleFontColor: '#6e707e',
+                titleFontSize: 14,
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                intersect: false,
+                mode: 'index',
+                caretPadding: 10,
+                callbacks: {
+                    label: function(tooltipItem, chart) {
+                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                        return datasetLabel + ': ' + tooltipItem.yLabel
+                    }
+                }
+            }
+        }
+
+    });
+}

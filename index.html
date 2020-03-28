@@ -18,6 +18,8 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
+    <meta name="keywords" content="Corona, Covid, Corona India, Covid India, pendamic, Theworkboxsolutions" />
+
 </head>
 
 <body id="page-top">
@@ -26,7 +28,7 @@
     <div id="wrapper" ng-app="myApp" ng-controller="myCtrl">
 
         <!-- Sidebar -->
-        <ul ng-if="!isCountrySelected" class="d-none navbar-nav sidebar-dark accordion mb-5" ng-class="isCountrySelected ? 'w-0 d-none' : 'd-block'" id="accordionSidebar">
+        <ul ng-if="!isCountrySelected" class="d-none navbar-nav sidebar-dark accordion mb-80" ng-class="isCountrySelected ? 'w-0 d-none' : 'd-block'" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
 
@@ -74,7 +76,7 @@
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
-        <div id="" class="d-lg-block w-100 mb-5" ng-class="isCountrySelected ? '' : 'w-0 d-none'">
+        <div id="" class="d-lg-block w-100 mb-80" ng-class="isCountrySelected ? '' : 'w-0 d-none'">
 
             <!-- Main Content -->
             <div id="content">
@@ -82,15 +84,25 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <div class="d-sm-flex align-items-center justify-content-between">
-                        <span ng-click="showCountryList()" class="d-inline-block mr-3" style="cursor:pointer;
-          transform: rotate(90deg);
-          font-size: 30px;">|||</span>
-                        <h1 class="h3 mb-0 text-gray-800 d-inline">{{headerText}}</h1>
+                    <div class="d-sm-flex align-items-center justify-content-between row">
+                        <div id="logo" class="col-12">
+                            <span ng-click="showCountryList()" class="d-inline-block mr-3 menuIcon">|||</span>
+                            <!-- <a href="http://www.theworkboxsolutions.com/" class="logo-image">
+                                <img height="30px" src="./css/logon-new-small.png" alt="workbox-logo" title="" />
+                            </a>
+                            <small class="d-inline-block"><a href="http://www.theworkboxsolutions.com/"
+                                    class="scrollto"><span>T</span>he
+                                    <span>W</span>orkbox
+                                    <span>S</span>olutions</a></small> -->
+                            <img ng-click="showEmergencyContact = true" class="callIcon" height="30px" src="./css/icons8-ringing-phone-90.png" alt="workbox-logo" title="" />
+
+                        </div>
                         <!-- <small class="text-muted text-right fl-right">Last Updated {{worldData.statistic_taken_at}}</small> -->
                     </div>
 
-                    <div ng-show="showNews" class="row">
+                    <p ng-class="(headerText != '') ? 'd-block' : ''" class="mb-0 d-none">{{headerText}}</p>
+
+                    <div ng-show="showNews" class="row d-none" ng-class="showNews? 'd-block' : ''">
                         <div ng-repeat="news in newsList" class="col-xl-3 col-md-6 mb-4 news-container">
                             <img class="w-100 newsImage" ng-src="{{news.urlToImage}}" />
                             <div class="row mt-1">
@@ -103,11 +115,11 @@
                         </div>
                     </div>
 
-                    <div ng-show="showMyths" class="d-lg-block w-100 ng-hide h-100">
+                    <div ng-show="showMyths" class="d-lg-block w-100 ng-hide h-100 d-none" ng-class="showMyths? 'd-block' : ''">
                         <iframe class="w-100 h-100" id="myIframe" src="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public/myth-busters"></iframe>
                     </div>
 
-                    <div ng-show="!showMyths && !showNews">
+                    <div ng-show="!showMyths && !showNews" class="d-none" ng-class="(!showMyths && !showNews) ? 'd-block' : ''">
                         <div class="row">
                             <div class="col-xl-3 col-md-6 mb-4 col-sm-6" ng-repeat="data in category">
                                 <div ng-class='"border-left-" + data.class' class="card shadow h-100 py-2">
@@ -149,7 +161,7 @@
                                     data might vary.</small>
                                 <table class="w-100">
                                     <tr class="text-center" ng-init="orderby='-value.cases'">
-                                        <th class="w-50 border"> State (Cities)</th>
+                                        <th class="w-50 border"> State (Total Cities)</th>
                                         <th class="w-25 border" ng-click="orderby === 'value.cases' ? (orderby='-value.cases') : (orderby='value.cases')">
                                             Cases</th>
                                         <th class="w-25 border" ng-click="orderby === 'value.deaths' ? (orderby='-value.deaths') : (orderby='value.deaths')">
@@ -169,21 +181,26 @@
                                         </td>
                                         <td class="w-25 border"><span class="text-dark">{{stateData.value.cases}}</span>
                                         </td>
-                                        <td class="w-25 border"> <span class="text-danger">{{stateData.value.deaths}}</span></td>
+                                        <td class="w-25 border"> <span class="text-danger">{{stateData.value.deaths}}</span>
+                                        </td>
                                     </tr>
                                 </table>
                             </div>
                             <!-- India Map -->
-                            <div ng-show="headerText === 'India'" class="col-lg-4">
+                            <div ng-show="headerText === 'India'" class="col-lg-4" id="map-container">
                                 <div class="map-legend">
                                     <div><span style="background-color: #88A4BC;"></span><small class="ml-1">0</small>
                                     </div>
                                     <div><span style="background-color: #FFD0C2;"></span><small class="ml-1">0-5</small>
                                     </div>
-                                    <div><span style="background-color: #FF8A83;"></span><small class="ml-1">5-20</small></div>
-                                    <div><span style="background-color: #D65F59;"></span><small class="ml-1">20-50</small></div>
-                                    <div><span style="background-color: #C23210;"></span><small class="ml-1">50-100</small></div>
-                                    <div><span style="background-color: #991101;"></span><small class="ml-1">100+</small></div>
+                                    <div><span style="background-color: #FF8A83;"></span><small class="ml-1">5-20</small>
+                                    </div>
+                                    <div><span style="background-color: #D65F59;"></span><small class="ml-1">20-50</small>
+                                    </div>
+                                    <div><span style="background-color: #C23210;"></span><small class="ml-1">50-100</small>
+                                    </div>
+                                    <div><span style="background-color: #991101;"></span><small class="ml-1">100+</small>
+                                    </div>
                                 </div>
                                 <div id="map"></div>
                             </div>
@@ -252,6 +269,24 @@
             </table>
         </div>
 
+        <div ng-if="showEmergencyContact" ng-class="showEmergencyContact ? 'd-block' : ''" class="loaderContainer d-none">
+            <span ng-click="closeEmergencyContact()" class="closeIcon">X</span>
+            <table class="modal-table">
+                <tr class="text-center" ng-init="orderby='-cases'">
+                    <th class="w-50 border"> State</th>
+                    <th class="w-25 border">
+                        Contact</th>
+                </tr>
+                <tr class="text-center text-black" ng-repeat="(key,value) in emergencyContactList">
+                    <td class="w-50 border"><a class="">{{key}} </a></td>
+                    <td class="w-50 border"><span class="">
+                        <a ng-repeat="telephoneNumber in value.split(',')" ng-href="tel:{{telephoneNumber}}">{{telephoneNumber}}</a>
+                    </span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
         <!-- Footer -->
         <footer class="sticky-footer bg-white text-center p-0">
             <small>Data source: <b>corona.lmao.ninja , covindia.com , coronavirus-monitor , mohfw.gov.in</b></br>
@@ -278,6 +313,7 @@
     <script src="services/chart/Chart.min.js"></script>
 
     <script src="./services/service.js"></script>
+    <script src="./services/stateEmergency.js"></script>
     <script src="map/countrymap.js"></script>
     <!-- <script src="services/chart/chart-pie-demo.js"></script> -->
 

@@ -8,11 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
     <title>Covid 2020</title>
 
     <!-- Custom fonts for this template-->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -28,7 +29,8 @@
     <div id="wrapper" ng-app="myApp" ng-controller="myCtrl">
 
         <!-- Sidebar -->
-        <ul ng-if="!isCountrySelected" class="d-none navbar-nav sidebar-dark accordion mb-80" ng-class="isCountrySelected ? 'w-0 d-none' : 'd-block'" id="accordionSidebar">
+        <ul ng-if="!isCountrySelected" class="d-none navbar-nav sidebar-dark accordion mb-80"
+            ng-class="isCountrySelected ? 'w-0 d-none' : 'd-block'" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
 
@@ -57,11 +59,15 @@
                     <table class="w-100">
                         <tr class="text-center" ng-init="orderby='-cases'">
                             <th class="w-50 border"> Country</th>
-                            <th class="w-25 border" ng-click="orderby === 'cases' ? (orderby='-cases') : (orderby='cases')">Cases</th>
-                            <th class="w-25 border" ng-click="orderby === 'deaths' ? (orderby='-deaths') : (orderby='deaths')"> Deaths
+                            <th class="w-25 border"
+                                ng-click="orderby === 'cases' ? (orderby='-cases') : (orderby='cases')">Cases</th>
+                            <th class="w-25 border"
+                                ng-click="orderby === 'deaths' ? (orderby='-deaths') : (orderby='deaths')"> Deaths
                             </th>
                         </tr>
-                        <tr class="text-center" ng-repeat="countryData in countryWise | filter:searchText | orderBy: orderby" ng-click="changeArea(countryData)">
+                        <tr class="text-center"
+                            ng-repeat="countryData in countryWise | filter:searchText | orderBy: orderby"
+                            ng-click="changeArea(countryData)">
                             <td class="w-50 border"> <span class="">
                                     <img class="flag" ng-src="{{countryData.countryInfo.flag}}">{{countryData.country}}
                                 </span></td>
@@ -80,21 +86,24 @@
 
             <!-- Main Content -->
             <div id="content">
-
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
+                    <!-- Header Section  -->
                     <div class="d-sm-flex align-items-center justify-content-between row">
                         <div id="logo" class="col-12">
                             <span ng-click="showCountryList()" class="d-inline-block mr-3 menuIcon">|||</span>
-                            <!-- <a href="http://www.theworkboxsolutions.com/" class="logo-image">
+                             <!-- <a href="http://www.theworkboxsolutions.com/" class="logo-image">
                                 <img height="30px" src="./css/logon-new-small.png" alt="workbox-logo" title="" />
                             </a>
                             <small class="d-inline-block"><a href="http://www.theworkboxsolutions.com/"
                                     class="scrollto"><span>T</span>he
                                     <span>W</span>orkbox
                                     <span>S</span>olutions</a></small> -->
-                            <img ng-click="showEmergencyContact = true" class="callIcon" height="30px" src="./css/icons8-ringing-phone-90.png" alt="workbox-logo" title="" />
+                            <img ng-click="refreshPage()" id="rotate" class="callIcon mr-5" height="30px"
+                                src="./css/refresh.png" alt="refresh" title="" />
+                            <img ng-click="showEmergencyContact = true" class="callIcon" height="30px"
+                                src="./css/icons8-ringing-phone-90.png" alt="emergency-contact" title="" />
 
                         </div>
                         <!-- <small class="text-muted text-right fl-right">Last Updated {{worldData.statistic_taken_at}}</small> -->
@@ -102,6 +111,7 @@
 
                     <p ng-class="(headerText != '') ? 'd-block' : ''" class="mb-0 d-none">{{headerText}}</p>
 
+                    <!-- News Section  -->
                     <div ng-show="showNews" class="row d-none" ng-class="showNews? 'd-flex' : ''">
                         <div ng-repeat="news in newsList" class="col-xl-3 col-md-6 mb-4 news-container">
                             <img class="w-100 newsImage" ng-src="{{news.urlToImage}}" />
@@ -115,18 +125,25 @@
                         </div>
                     </div>
 
-                    <div ng-show="showMyths" class="d-lg-block w-100 ng-hide h-100 d-none" ng-class="showMyths? 'd-block' : ''">
-                        <iframe class="w-100 h-100" id="myIframe" src="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public/myth-busters"></iframe>
+                    <!-- Myth section  -->
+                    <div ng-show="showMyths" class="d-lg-block w-100 ng-hide h-100 d-none"
+                        ng-class="showMyths? 'd-block' : ''">
+                        <iframe class="w-100 h-100" id="myIframe"
+                            src="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/advice-for-public/myth-busters"></iframe>
                     </div>
 
-                    <div ng-show="!showMyths && !showNews" class="d-none" ng-class="(!showMyths && !showNews) ? 'd-block' : ''">
+                    <!-- World and Country Section  -->
+                    <div ng-show="!showMyths && !showNews" class="d-none"
+                        ng-class="(!showMyths && !showNews) ? 'd-block' : ''">
+                        <!-- Top Data Sectoin  -->
                         <div class="row">
-                            <div class="col-xl-3 col-md-6 mb-4 col-sm-6" ng-repeat="data in category">
+                            <div class="col-6 col-xl-3 col-md-6 mb-4 col-sm-6" ng-repeat="data in category">
                                 <div ng-class='"border-left-" + data.class' class="card shadow h-100 py-2">
                                     <div class="card-body">
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2 text-center">
-                                                <div ng-class='"text-" + data.class' class="text-xs font-weight-bold text-uppercase mb-1">
+                                                <div ng-class='"text-" + data.class'
+                                                    class="text-xs font-weight-bold text-uppercase mb-1">
                                                     {{data.label}}</div>
                                                 <div class="h3 mb-0 font-weight-bold" ng-class='"text-" + data.class'>
                                                     {{data.value}}</div>
@@ -138,7 +155,9 @@
                                                     </div>
                                                     <div class="col">
                                                         <div class="progress progress-sm mr-2">
-                                                            <div class="progress-bar bg-info" role="progressbar" ng-style="getStyle(data.percentage)" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            <div class="progress-bar bg-info" role="progressbar"
+                                                                ng-style="getStyle(data.percentage)" aria-valuenow="50"
+                                                                aria-valuemin="0" aria-valuemax="100"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -153,8 +172,8 @@
                             </div>
                         </div>
 
-
                         <div class="row">
+                            <!-- India state Table  -->
                             <div ng-if="headerText === 'India'" class="col-lg-4">
                                 <!-- <small class="text-danger" ng-if="indainStateData.length !== 0">Note: Country overall
                                     data and statewise
@@ -162,16 +181,19 @@
                                 <table class="w-100">
                                     <tr class="text-center" ng-init="orderby='-value.cases'">
                                         <th class="w-50 border"> State (Total Cities)</th>
-                                        <th class="w-25 border" ng-click="orderby === 'value.cases' ? (orderby='-value.cases') : (orderby='value.cases')">
+                                        <th class="w-25 border"
+                                            ng-click="orderby === 'value.cases' ? (orderby='-value.cases') : (orderby='value.cases')">
                                             Cases</th>
-                                        <th class="w-25 border" ng-click="orderby === 'value.deaths' ? (orderby='-value.deaths') : (orderby='value.deaths')">
+                                        <th class="w-25 border"
+                                            ng-click="orderby === 'value.deaths' ? (orderby='-value.deaths') : (orderby='value.deaths')">
                                             Deaths</th>
                                     </tr>
                                     <tr ng-if="indainStateData.length === 0">
                                         <td><small class="text-danger">Updating India data. Please try after
                                                 sometime...</small></td>
                                     </tr>
-                                    <tr class="text-center labelText" ng-click="openModal(stateData)" ng-repeat="stateData in indainStateData | orderBy: orderby">
+                                    <tr class="text-center labelText" ng-click="openModal(stateData)"
+                                        ng-repeat="stateData in indainStateData | orderBy: orderby">
                                         <td class="w-50 border">
                                             <a class="text-primary">{{stateData.key}}
                                                 <span class="text-info">
@@ -181,7 +203,8 @@
                                         </td>
                                         <td class="w-25 border"><span class="text-dark">{{stateData.value.cases}}</span>
                                         </td>
-                                        <td class="w-25 border"> <span class="text-danger">{{stateData.value.deaths}}</span>
+                                        <td class="w-25 border"> <span
+                                                class="text-danger">{{stateData.value.deaths}}</span>
                                         </td>
                                     </tr>
                                 </table>
@@ -189,33 +212,46 @@
                             <!-- India Map -->
                             <div ng-show="headerText === 'India'" class="col-lg-4" id="map-container">
                                 <div class="map-legend">
-                                    <div><span style="background-color: #88A4BC;"></span><small class="ml-1">0</small>
+                                    <div><span style="background-color: #88A4BC;"></span>
+                                        <small class="ml-1">0</small>
                                     </div>
-                                    <div><span style="background-color: #FFD0C2;"></span><small class="ml-1">0-5</small>
+                                    <div><span style="background-color: #FFD0C2;"></span><small
+                                            class="ml-1">0-10</small>
                                     </div>
-                                    <div><span style="background-color: #FF8A83;"></span><small class="ml-1">5-20</small>
+                                    <div><span style="background-color: #FF8A83;"></span><small
+                                            class="ml-1">10-50</small>
                                     </div>
-                                    <div><span style="background-color: #D65F59;"></span><small class="ml-1">20-50</small>
+                                    <div><span style="background-color: #D65F59;"></span><small
+                                            class="ml-1">50-100</small>
                                     </div>
-                                    <div><span style="background-color: #C23210;"></span><small class="ml-1">50-100</small>
+                                    <div><span style="background-color: #C23210;"></span><small
+                                            class="ml-1">100-500</small>
                                     </div>
-                                    <div><span style="background-color: #991101;"></span><small class="ml-1">100+</small>
+                                    <div><span style="background-color: #991101;"></span><small
+                                            class="ml-1">500+</small>
                                     </div>
                                 </div>
                                 <div id="map"></div>
                             </div>
 
+                            <!-- Bar Chart  -->
                             <div class="col-lg-6" ng-show="headerText==='World'">
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3 d-flex flex-row align-items-center">
                                         <small>Country with Most</small>
                                         <div class="ml-3 form-check form-check-inline" ng-init="value = 'cases'">
-                                            <input ng-change='updateBarChart(value)' ng-model="value" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="cases">
-                                            <label ng-class="value === 'cases' ? 'text-primary' : ''" class="form-check-label" for="inlineRadio1">Cases</label>
+                                            <input ng-change='updateBarChart(value)' ng-model="value"
+                                                class="form-check-input" type="radio" name="inlineRadioOptions"
+                                                id="inlineRadio1" value="cases">
+                                            <label ng-class="value === 'cases' ? 'text-primary' : ''"
+                                                class="form-check-label" for="inlineRadio1">Cases</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input ng-change='updateBarChart(value)' ng-model="value" class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="deaths">
-                                            <label ng-class="value === 'deaths' ? 'text-primary' : ''" class="form-check-label" for="inlineRadio2">Deaths</label>
+                                            <input ng-change='updateBarChart(value)' ng-model="value"
+                                                class="form-check-input" type="radio" name="inlineRadioOptions"
+                                                id="inlineRadio2" value="deaths">
+                                            <label ng-class="value === 'deaths' ? 'text-primary' : ''"
+                                                class="form-check-label" for="inlineRadio2">Deaths</label>
                                         </div>
                                     </div>
                                     <div class="text-center w-100">
@@ -230,7 +266,8 @@
                             <div class="col-lg-4" ng-if="headerText!=='World'">
                                 <div class="card shadow mb-4">
                                     <!-- Card Header - Dropdown -->
-                                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <div
+                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                         <small class="m-0 text-info">
                                             {{headerText}} :
                                             <span class="text-primary">Cases</span> |
@@ -246,19 +283,68 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- COVID Simulator -->
+                            <div class="d-none col-sm-12 col-lg-6" id="simulator">
+                                <div class="py-3">
+                                    <p class="text-danger mb-0">COVID-19 Spread Simulator</p>
+                                    <form>
+                                        <label class="text-success mr-3"
+                                            aria-label="Activate People Stay At Home filter"
+                                            title="People stay at home">
+                                            <input id="stay-home" type="checkbox"> Stay At Home
+                                        </label>
+                                        <label class="text-danger" aria-label="Activate Deaths provoked by virus"
+                                            title="Deaths provoked by virus">
+                                            <input id="deaths" type="checkbox">Show Deaths
+                                        </label>
+                                    </form>
+                                </div>
+
+                                <div id="count">
+                                    <small>Healthy<br /><span class="text-center d-block" id="well">0</span></small>
+                                    <small>Recovered<br /><span class="text-center d-block"
+                                            id="recovered">0</span></small>
+                                    <small>Sick<br /><span class="text-center d-block" id="infected">0</span></small>
+                                    <small id="death-count">Deaths<br /><span
+                                            class="font-weight-bold text-center d-block" id="death">0</span></small>
+                                    <small class="text-primary">Max Concurrently Sick<br /><span
+                                            class="text-center d-block" id="max-concurrent-infected">0</span>
+                                    </small>
+                                </div>
+
+                                <svg id="graph" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" height="30" width="100%"
+                                    aria-labelledby="Graph of virus spread" role="img">
+                                    <title>Graph of virus spread</title>
+                                </svg>
+                                </header>
+                                <section>
+                                    <div id="canvas">
+                                        <div id="replay" style='display: none'>🔁 Run a new simulation</div>
+                                    </div>
+                                </section>
+                                </main>
+
+                                <small>
+                                    Based on <a class="text-info" target="_blank" rel="noopener nofollow"
+                                        href='https://www.washingtonpost.com/graphics/2020/world/corona-simulator/'>Washington
+                                        Post article</a> | <a class="text-info"
+                                        href='https://github.com/midudev/covid-19-spread-simulator' target="_blank"
+                                        rel="noopener nofollow">Source Code Credit</a>
+                                </small>
+                            </div>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
         <!-- End of Content Wrapper -->
 
         <div ng-if="isApiCallInProgress" class="loaderContainer d-none" ng-class="isApiCallInProgress ? 'd-block' : ''">
             <div ng-if="!isApiFailed" class="loader"></div>
-            <div ng-if="isApiFailed" ng-class="isApiFailed ? 'd-block' : ''" class="api_error text-center text-light d-none">
+            <div ng-if="isApiFailed" ng-class="isApiFailed ? 'd-block' : ''"
+                class="api_error text-center text-light d-none">
                 <p>Unable to load Information</p>
                 <button class="btn btn-success" ng-click="showOnlyNews(true)">Read News</button>
                 <button class="btn btn-primary" ng-click="refreshPage()">Refresh</button>
@@ -277,16 +363,18 @@
                     <th class="w-25 border" ng-click="orderby === 'deaths' ? (orderby='-deaths') : (orderby='deaths')">
                         Deaths</th>
                 </tr>
-                <tr class="text-center text-black" ng-repeat="cityData in selectedStateData.value.city | orderBy: orderby">
+                <tr class="text-center text-black"
+                    ng-repeat="cityData in selectedStateData.value.city | orderBy: orderby">
                     <td class="w-50 border"><a class="">{{cityData.name}} </a></td>
                     <td class="w-25 border"><span class="">{{cityData.cases}}</span>
                     </td>
-                    <td class="w-25 border"> <span class="">{{cityData.deaths}}</span></td>
+                    <td class="w-25 border"> <span class="text-danger">{{cityData.deaths}}</span></td>
                 </tr>
             </table>
         </div>
 
-        <div ng-if="showEmergencyContact" ng-class="showEmergencyContact ? 'd-block' : ''" class="loaderContainer d-none">
+        <div ng-if="showEmergencyContact" ng-class="showEmergencyContact ? 'd-block' : ''"
+            class="loaderContainer d-none">
             <span ng-click="closeEmergencyContact()" class="closeIcon">X</span>
             <small class="d-block text-center text-white mt-1">Helpline Number Toll free: <a class="text-danger"
                     href="tel: 1075">1075 </a>&
@@ -340,7 +428,6 @@
     <script src="./services/service.js"></script>
     <script src="./services/stateEmergency.js"></script>
     <script src="map/countrymap.js"></script>
-    <!-- <script src="services/chart/chart-pie-demo.js"></script> -->
 
 </body>
 

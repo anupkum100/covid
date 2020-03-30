@@ -1,10 +1,10 @@
 // ALl country data : https://pomber.github.io/covid19/timeseries.json
 var app = angular.module('myApp', []);
-app.controller('myCtrl', function($scope, $http) {
+app.controller('myCtrl', function ($scope, $http) {
     $scope.headerText = "India";
     $scope.indiaData = {};
     $scope.indainStateData = [];
-    $scope.isCountrySelected = false;
+    $scope.isCountrySelected = true;
     $scope.isApiCallInProgress = false;
     $scope.isApiFailed = false;
     $scope.showFacts = false;
@@ -69,6 +69,7 @@ app.controller('myCtrl', function($scope, $http) {
         $scope.headerText = countryData.country;
         $scope.showMyths = false;
         $scope.showNews = false;
+        $scope.isCountrySelected = false;
         $scope.showCountryList();
         if (countryData === 'World') {
             $scope.headerText = countryData;
@@ -115,20 +116,19 @@ app.controller('myCtrl', function($scope, $http) {
             if (responseData[stateName]) {
                 simplemaps_countrymap_mapdata.state_specific[stateObj].description = 'Total:' + responseData[stateName].cases + '</br>' +
                     '<span class="text-danger">Deaths:' + responseData[stateName].deaths + '</span></br>';
-
                 if (responseData[stateName].cases > 0) {
                     simplemaps_countrymap_mapdata.state_specific[stateObj].color = '#FFD0C2';
                 }
-                if (responseData[stateName].cases > 5) {
+                if (responseData[stateName].cases > 10) {
                     simplemaps_countrymap_mapdata.state_specific[stateObj].color = '#FF8A83';
                 }
-                if (responseData[stateName].cases > 20) {
+                if (responseData[stateName].cases > 50) {
                     simplemaps_countrymap_mapdata.state_specific[stateObj].color = '#D65F59';
                 }
-                if (responseData[stateName].cases > 50) {
+                if (responseData[stateName].cases > 100) {
                     simplemaps_countrymap_mapdata.state_specific[stateObj].color = '#C23210';
                 }
-                if (responseData[stateName].cases > 100) {
+                if (responseData[stateName].cases > 500) {
                     simplemaps_countrymap_mapdata.state_specific[stateObj].color = '#991101';
                 }
             }
@@ -312,6 +312,20 @@ app.controller('myCtrl', function($scope, $http) {
         createBarChart($scope.countryWise, category)
     }
 
+    $scope.refreshPage = () => {
+        $("#rotate").addClass("rotate");
+        setTimeout(() => {
+            $("#rotate").removeClass("rotate")
+            reloadData();
+        }, 1000)
+    }
+
+    function reloadData() {
+        $scope.indiaTotalCases = 0;
+        $scope.indiaTotalDeaths = 0;
+        getIndianStateData("https://v1.api.covindia.com/district-values");
+    }
+
 });
 
 
@@ -325,7 +339,7 @@ function getPercentage(category, total) {
 scrollFunction();
 
 function scrollFunction() {
-    window.onscroll = function() { scrollFunction() };
+    window.onscroll = function () { scrollFunction() };
     mybutton = document.getElementById("scrollBtn");
     if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
         mybutton.style.display = "block";
@@ -353,50 +367,50 @@ function createAreaChart(graphData) {
         data: {
             labels: labels,
             datasets: [{
-                    label: "Infected",
-                    lineTension: 0.7,
-                    backgroundColor: "rgba(78, 115, 223, 0.05)",
-                    borderColor: "rgba(78, 115, 223, 1)",
-                    pointRadius: 2,
-                    pointBackgroundColor: "rgba(78, 115, 223, 1)",
-                    pointBorderColor: "rgba(78, 115, 223, 1)",
-                    pointHoverRadius: 2,
-                    pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-                    pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-                    pointHitRadius: 2,
-                    pointBorderWidth: 1,
-                    data
-                },
-                {
-                    label: "Deaths",
-                    lineTension: 0.7,
-                    backgroundColor: "rgba(78, 115, 223, 0.05)",
-                    borderColor: "#e74a3b",
-                    pointRadius: 2,
-                    pointBackgroundColor: "#e74a3b",
-                    pointBorderColor: "#e74a3b",
-                    pointHoverRadius: 2,
-                    pointHoverBackgroundColor: "#e74a3b",
-                    pointHoverBorderColor: "#e74a3b",
-                    pointHitRadius: 10,
-                    pointBorderWidth: 2,
-                    data: deaths
-                },
-                {
-                    label: "Recovered",
-                    lineTension: 0.7,
-                    backgroundColor: "rgba(78, 115, 223, 0.05)",
-                    borderColor: "#1cc88a",
-                    pointRadius: 2,
-                    pointBackgroundColor: "#1cc88a",
-                    pointBorderColor: "#1cc88a",
-                    pointHoverRadius: 2,
-                    pointHoverBackgroundColor: "#1cc88a",
-                    pointHoverBorderColor: "#1cc88a",
-                    pointHitRadius: 10,
-                    pointBorderWidth: 2,
-                    data: recovered
-                }
+                label: "Infected",
+                lineTension: 0.7,
+                backgroundColor: "rgba(78, 115, 223, 0.05)",
+                borderColor: "rgba(78, 115, 223, 1)",
+                pointRadius: 2,
+                pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointBorderColor: "rgba(78, 115, 223, 1)",
+                pointHoverRadius: 2,
+                pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                pointHitRadius: 2,
+                pointBorderWidth: 1,
+                data
+            },
+            {
+                label: "Deaths",
+                lineTension: 0.7,
+                backgroundColor: "rgba(78, 115, 223, 0.05)",
+                borderColor: "#e74a3b",
+                pointRadius: 2,
+                pointBackgroundColor: "#e74a3b",
+                pointBorderColor: "#e74a3b",
+                pointHoverRadius: 2,
+                pointHoverBackgroundColor: "#e74a3b",
+                pointHoverBorderColor: "#e74a3b",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                data: deaths
+            },
+            {
+                label: "Recovered",
+                lineTension: 0.7,
+                backgroundColor: "rgba(78, 115, 223, 0.05)",
+                borderColor: "#1cc88a",
+                pointRadius: 2,
+                pointBackgroundColor: "#1cc88a",
+                pointBorderColor: "#1cc88a",
+                pointHoverRadius: 2,
+                pointHoverBackgroundColor: "#1cc88a",
+                pointHoverBorderColor: "#1cc88a",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
+                data: recovered
+            }
             ],
         },
         options: {
@@ -413,7 +427,7 @@ function createAreaChart(graphData) {
                 yAxes: [{
                     ticks: {
                         maxTicksLimit: 20,
-                        callback: function(value, index, values) {
+                        callback: function (value, index, values) {
                             return value;
                         }
                     }
@@ -437,7 +451,7 @@ function createAreaChart(graphData) {
                 mode: 'index',
                 caretPadding: 10,
                 callbacks: {
-                    label: function(tooltipItem, chart) {
+                    label: function (tooltipItem, chart) {
                         var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
                         return datasetLabel + ': ' + tooltipItem.yLabel
                     }

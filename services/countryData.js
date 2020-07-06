@@ -1,6 +1,9 @@
 // ALl country data : https://pomber.github.io/covid19/timeseries.json
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function ($scope, $http) {
+    // redirect to live URL
+    location.href = "http://www.theworkboxsolutions.com/covid";
+
     $scope.headerText = "India";
     $scope.indiaData = {};
     $scope.indainStateData = [];
@@ -12,6 +15,7 @@ app.controller('myCtrl', function ($scope, $http) {
     $scope.showNews = false;
     $scope.showEmergencyContact = false;
     $scope.emergencyContactList = stateEmergency;
+    $scope.reload = false;
 
     $scope.indiaTotalCases = 0;
     $scope.indiaTotalDeaths = 0;
@@ -231,9 +235,13 @@ app.controller('myCtrl', function ($scope, $http) {
             $scope.isApiCallInProgress = false;
             $scope.countryWise = response.data;
             response.data.forEach(countryData => {
-                if (countryData.country === 'India') {
+                if (countryData.country === 'India' && $scope.headerText === 'India') {
                     $scope.indiaData = countryData;
                     $scope.changeArea($scope.indiaData);
+                }
+                else if ($scope.headerText === countryData.country && $scope.reload) {
+                    $scope.changeArea(countryData);
+                    $scope.reload = false;
                 }
                 $scope.worldData = {
                     cases: $scope.worldData.cases + countryData.cases,
@@ -323,6 +331,15 @@ app.controller('myCtrl', function ($scope, $http) {
     function reloadData() {
         $scope.indiaTotalCases = 0;
         $scope.indiaTotalDeaths = 0;
+        $scope.reload = true;
+
+        $scope.worldData = {
+            cases: 0,
+            deaths: 0,
+            recovered: 0,
+            new: 0,
+        }
+        
         getIndianStateData("https://v1.api.covindia.com/district-values");
     }
 
